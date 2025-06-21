@@ -111,4 +111,3 @@ Edit
 
 ---
 
-✅ You’re all set. Let me know if you'd like help writing a `.gitignore`, pushing to GitHub, or deploying!

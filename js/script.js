@@ -43,44 +43,34 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    const key = `${answers.q1}_${answers.q2}_${answers.q3}`;
+
+    // Placeholder result mapping
     const combos = {
-      shadow_metal_cold: `
-        <strong>The Shadow Operator</strong><br />
-        You move quietly and strike with precision. Chaos for you is all about stealth and control.<br />
-        <em>You’d rather pull strings behind the curtain than be in the spotlight.</em>
+      lipstick_pop_revenge: `
+        <strong>💄 The Enchanted Fury</strong><br />
+        <!-- Add your character's logic here --> 
       `,
-      mirror_trance_heat: `
-        <strong>The Fire Glitch</strong><br />
-        You thrive on unpredictable energy and live for drama. Mirrors? Just portals to your next meltdown.<br />
-        <em>You are magnetic, chaotic, and unforgettable.</em>
+      keychain_emo_chaotic: `
+        <strong>🧿 The Haunted Heart</strong><br />
+        <!-- Add your character's logic here -->
       `,
-      spark_lofi_static: `
-        <strong>The Neon Drifter</strong><br />
-        Your chaos is subtle, dreamy, and electric. You float between vibes, soundtracked by lo-fi beats.<br />
-        <em>You look chill, but you're broadcasting static at full volume.</em>
+      earbuds_hyperpop_mystery: `
+        <strong>🎧 The Electric Phantom</strong><br />
+        <!-- Add your character's logic here -->
       `,
+      // Add more combinations as needed...
     };
 
-    const key = `${answers.q1}_${answers.q2}_${answers.q3}`;
-    const personality = combos[key] || `
-      <strong>The Undefined Chaos</strong><br />
-      You defy all categories. Pure unpredictability.<br />
-      <em>You're a walking paradox — and proud of it.</em>
+    const resultText = combos[key] || `
+      <strong>🔮 Undefined Chaos</strong><br />
+      You’re unclassifiable. One of one.<br />
+      <!-- Optional fallback description -->
     `;
 
-    resultEl.innerHTML = personality;
+    resultEl.innerHTML = resultText;
     resultEl.classList.remove("hidden");
-
-    // Optional: Save to localStorage (uncomment if needed)
-    // localStorage.setItem("chaosPersonality", personality);
   });
-
-  // Optional: Load saved result
-  // const savedResult = localStorage.getItem("chaosPersonality");
-  // if (savedResult) {
-  //   resultEl.innerHTML = savedResult;
-  //   resultEl.classList.remove("hidden");
-  // }
 });
 
 
