@@ -170,6 +170,7 @@ footer {
 .countdown-floating .label {
   font-weight: 600;
   font-size: 0.9rem;
+  letter-spacing: 1px;
   color: #fff;
   display: flex;
   align-items: center;
@@ -209,30 +210,54 @@ footer {
   width: 2px;
   height: 300%;
   background: linear-gradient(to bottom, rgba(255, 0, 255, 0), rgba(255, 0, 255, 0.6), rgba(255, 255, 255, 0));
-  animation: strike 20s infinite ease-in-out;
+  animation: strike 12s infinite ease-in-out;
   filter: blur(1px);
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 @keyframes strike {
-  0% { transform: translateY(-100%); opacity: 0; }
-  15% { transform: translateY(0); opacity: 0.9; }
-  30% { transform: translateY(100%); opacity: 0; }
-  100% { transform: translateY(100%); opacity: 0; }
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  15% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  30% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }
 
 .evil-icon {
   position: absolute;
   top: -10%;
   transform: translateX(-50%);
-  animation: floatDown 60s linear infinite;
-  opacity: 0.9;
+  animation: floatDown linear infinite;
+  opacity: 0.8;
   z-index: 0;
-  filter: drop-shadow(0 0 8px #ff66cc) brightness(1.3);
+  filter: drop-shadow(0 0 8px #ff66cc);
 }
 
 @keyframes floatDown {
-  0% { transform: translate(-50%, -100%) scale(1); opacity: 0.8; }
-  50% { opacity: 1; filter: drop-shadow(0 0 12px #ff66cc); }
-  100% { transform: translate(-50%, 100vh) scale(1); opacity: 0; }
+  0% {
+    transform: translate(-50%, -100%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px #ff66cc);
+  }
+  100% {
+    transform: translate(-50%, 100vh) scale(1);
+    opacity: 0;
+  }
 }
