@@ -4,8 +4,11 @@ function updateCountdown() {
   const now = new Date();
   const diff = targetDate - now;
 
+  const countdownEl = document.getElementById("miniCountdown");
+  if (!countdownEl) return;
+
   if (diff <= 0) {
-    document.getElementById("miniCountdown").textContent = "🛬 Arrived!";
+    countdownEl.textContent = "🛬 Arrived!";
     return;
   }
 
@@ -14,14 +17,57 @@ function updateCountdown() {
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  document.getElementById("miniCountdown").textContent =
-    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
 setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call
+updateCountdown();
 
-// === CHAOS PERSONALITY QUIZ ===
+// === DIARY FORM ===
+document.addEventListener("DOMContentLoaded", function () {
+  const chaosForm = document.getElementById("chaosForm");
+  const viewBtn = document.getElementById("viewEntriesBtn");
+
+  if (chaosForm) {
+    chaosForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const text = document.getElementById("chaosInput").value.trim();
+
+      if (!text) {
+        alert("You can't send empty chaos!");
+        return;
+      }
+
+      fetch("/entries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            window.location.href = "/pages/diary.html";
+          } else {
+            alert("Something went wrong saving your chaos.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Server error. Try again.");
+        });
+    });
+  }
+
+  if (viewBtn) {
+    viewBtn.addEventListener("click", function () {
+      window.location.href = "/pages/diary.html";
+    });
+  }
+});
+
+// === QUIZ LOGIC ===
 document.addEventListener("DOMContentLoaded", function () {
   const quizForm = document.getElementById("chaosQuiz");
   const resultEl = document.getElementById("quizResult");
@@ -45,52 +91,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const key = `${answers.q1}_${answers.q2}_${answers.q3}`;
 
-    // Placeholder result mapping
     const combos = {
       lipstick_pop_revenge: `
         <strong>💄 The Enchanted Fury</strong><br />
-        <!-- Add your character's logic here --> 
+        <!-- Placeholder: Write description here -->
       `,
       keychain_emo_chaotic: `
         <strong>🧿 The Haunted Heart</strong><br />
-        <!-- Add your character's logic here -->
+        <!-- Placeholder: Write description here -->
       `,
       earbuds_hyperpop_mystery: `
         <strong>🎧 The Electric Phantom</strong><br />
-        <!-- Add your character's logic here -->
+        <!-- Placeholder: Write description here -->
       `,
-      // Add more combinations as needed...
+      // Add more combos as needed
     };
 
     const resultText = combos[key] || `
       <strong>🔮 Undefined Chaos</strong><br />
-      You’re unclassifiable. One of one.<br />
-      <!-- Optional fallback description -->
+      You’re unclassifiable. One of one.
     `;
 
     resultEl.innerHTML = resultText;
     resultEl.classList.remove("hidden");
   });
 });
-
-
-function saveEntry() {
-  const entry = document.getElementById("diaryEntry").value.trim();
-  if (!entry) return;
-
-  const existing = JSON.parse(localStorage.getItem("chaosEntries")) || [];
-  existing.push({
-    text: entry,
-    date: new Date().toLocaleString(),
-  });
-
-  localStorage.setItem("chaosEntries", JSON.stringify(existing));
-  document.getElementById("diaryEntry").value = "";
-  alert("Chaos recorded.");
-}
-
-function viewEntries() {
-  window.location.href = "pages/diary.html"; // ✅ correct path after moving
-}
-
-

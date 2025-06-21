@@ -18,18 +18,11 @@
     <div class="lightning" style="left: 80%; animation-delay: 8s;"></div>
     <div class="lightning" style="left: 90%; animation-delay: 10s;"></div>
 
-    <svg class="evil-icon" style="left: 10%; animation-delay: 0s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc">
-      <path d="..." />
-    </svg>
-    <svg class="evil-icon" style="left: 20%; animation-delay: 3s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc">
-      <path d="..." />
-    </svg>
-    <svg class="evil-icon" style="left: 60%; animation-delay: 6s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc">
-      <path d="..." />
-    </svg>
-    <svg class="evil-icon" style="left: 90%; animation-delay: 12s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc">
-      <path d="..." />
-    </svg>
+    <!-- Floating evil hearts -->
+    <svg class="evil-icon" style="left: 10%; animation-delay: 0s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="..." /></svg>
+    <svg class="evil-icon" style="left: 20%; animation-delay: 3s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="..." /></svg>
+    <svg class="evil-icon" style="left: 60%; animation-delay: 6s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="..." /></svg>
+    <svg class="evil-icon" style="left: 90%; animation-delay: 12s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="..." /></svg>
   </div>
 
   <!-- Countdown Floating -->
@@ -66,7 +59,7 @@
       <form id="chaosForm">
         <textarea id="chaosInput" placeholder="Confess your chaos..."></textarea>
         <button type="submit">Save</button>
-        <button type="button" onclick="viewEntries()">View All Entries</button>
+        <button type="button" id="viewEntriesBtn">View All Entries</button>
       </form>
     </section>
 
@@ -93,24 +86,24 @@
           <label><input type="radio" name="q1" value="keychain"> An ex’s keychain</label><br />
           <label><input type="radio" name="q1" value="earbuds"> Glitched earbuds</label>
         </div>
-    
+
         <div class="quiz-question">
           <p>2. Pick a soundtrack for your breakdown:</p>
           <label><input type="radio" name="q2" value="pop"> 2000s Turkish Pop</label><br />
           <label><input type="radio" name="q2" value="emo"> Late-Night Emo</label><br />
           <label><input type="radio" name="q2" value="hyperpop"> Hyperpop Meltdown</label>
         </div>
-    
+
         <div class="quiz-question">
           <p>3. What chaos vibe do you emit?</p>
           <label><input type="radio" name="q3" value="revenge"> Silent Revenge</label><br />
           <label><input type="radio" name="q3" value="chaotic"> Full-Blown Chaos</label><br />
           <label><input type="radio" name="q3" value="mystery"> Distant Mystery</label>
         </div>
-    
+
         <button type="submit">Reveal Your Chaos Identity</button>
       </form>
-    
+
       <div id="quizResult" class="quiz-result hidden"></div>
     </section>
   </main>
@@ -131,118 +124,7 @@
     Made with ☠️ by You & Her | © 2025
   </footer>
 
-  <!-- Diary Save Logic -->
-  <script>
-    document.getElementById('chaosForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const text = document.getElementById('chaosInput').value.trim();
-
-      if (!text) {
-        alert("You can't send empty chaos!");
-        return;
-      }
-
-      fetch('/entries', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          window.location.href = '/pages/diary.html';
-        } else {
-          alert("Something went wrong saving your chaos.");
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Server error. Try again.");
-      });
-    });
-
-    function viewEntries() {
-      window.location.href = '/pages/diary.html';
-    }
-  </script>
-
-  <!-- Countdown Timer -->
-  <script>
-    function updateCountdown() {
-      const targetDate = new Date("2025-09-01T00:00:00");
-      const now = new Date();
-      const diff = targetDate - now;
-
-      if (diff <= 0) {
-        document.getElementById("miniCountdown").textContent = "🛬 Arrived!";
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      document.getElementById("miniCountdown").textContent =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-  </script>
-
-  <!-- Chaos Quiz Logic -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const quizForm = document.getElementById("chaosQuiz");
-      const resultEl = document.getElementById("quizResult");
-
-      if (!quizForm) return;
-
-      quizForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const answers = {
-          q1: document.querySelector('input[name="q1"]:checked')?.value,
-          q2: document.querySelector('input[name="q2"]:checked')?.value,
-          q3: document.querySelector('input[name="q3"]:checked')?.value,
-        };
-
-        if (!answers.q1 || !answers.q2 || !answers.q3) {
-          resultEl.innerHTML = "⚠️ Please answer all questions.";
-          resultEl.classList.remove("hidden");
-          return;
-        }
-
-        const key = `${answers.q1}_${answers.q2}_${answers.q3}`;
-
-        const combos = {
-          lipstick_pop_revenge: `
-            <strong>💄 The Enchanted Fury</strong><br />
-            <!-- Add your character's logic here -->
-          `,
-          keychain_emo_chaotic: `
-            <strong>🧿 The Haunted Heart</strong><br />
-            <!-- Add your character's logic here -->
-          `,
-          earbuds_hyperpop_mystery: `
-            <strong>🎧 The Electric Phantom</strong><br />
-            <!-- Add your character's logic here -->
-          `,
-        };
-
-        const resultText = combos[key] || `
-          <strong>🔮 Undefined Chaos</strong><br />
-          You’re unclassifiable. One of one.
-        `;
-
-        resultEl.innerHTML = resultText;
-        resultEl.classList.remove("hidden");
-      });
-    });
-  </script>
-
+  <!-- Just one script reference -->
+  <script src="js/script.js"></script>
 </body>
 </html>
