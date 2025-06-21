@@ -24,39 +24,49 @@ body {
   margin: auto;
   line-height: 1.6;
   scroll-behavior: smooth;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Floating animated cloud layer */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 40%, rgba(255, 192, 255, 0.06), transparent 50%),
+              radial-gradient(circle at 70% 60%, rgba(255, 128, 255, 0.04), transparent 50%);
+  animation: cloudMove 60s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes cloudMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(50%); }
 }
 
 header {
   text-align: center;
   margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
 }
 
-.glow-text {
-  font-family: 'Orbitron', sans-serif;
+h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: glowText 8s ease infinite;
+  color: var(--accent-light);
+  text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent-light);
+  font-family: 'Orbitron', sans-serif;
+  animation: glow 4s ease-in-out infinite alternate;
 }
 
-@keyframes glowText {
-  0% {
-    background-position: 0% center;
-    text-shadow: 0 0 6px var(--accent);
-  }
-  50% {
-    background-position: 100% center;
-    text-shadow: 0 0 14px var(--accent-light);
-  }
-  100% {
-    background-position: 0% center;
-    text-shadow: 0 0 6px var(--accent);
-  }
+@keyframes glow {
+  from { text-shadow: 0 0 10px var(--accent); }
+  to { text-shadow: 0 0 30px var(--accent-light); }
 }
 
 .tagline {
@@ -70,8 +80,22 @@ header {
 main {
   display: grid;
   gap: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* Side-by-side row for media */
+.media-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.media-row .glass-card {
+  flex: 1 1 48%;
+}
+
+/* Card style */
 .glass-card {
   background: var(--card-glass);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -95,7 +119,6 @@ textarea {
   color: var(--text);
   font-family: inherit;
   font-size: 1rem;
-  resize: vertical;
 }
 
 button {
@@ -107,7 +130,6 @@ button {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  font-family: inherit;
   transition: 0.2s ease;
 }
 
@@ -119,6 +141,7 @@ button:hover {
 iframe {
   width: 100%;
   border-radius: 10px;
+  border: none;
 }
 
 footer {
@@ -128,49 +151,95 @@ footer {
   font-size: 0.9rem;
 }
 
+/* Countdown Floating Box */
 .countdown-floating {
-    position: fixed;
-    top: 1rem;
-    right: 1.5rem;
-    padding: 1rem 1.2rem;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--accent-light);
-    border-radius: 12px;
-    font-size: 0.85rem;
-    color: var(--accent-light);
-    z-index: 99;
-    font-family: 'Orbitron', sans-serif;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 15px rgba(140, 0, 255, 0.2);
-    min-width: 170px;
+  position: fixed;
+  top: 1rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--accent-light);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: var(--accent-light);
+  z-index: 999;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  box-shadow: 0 0 10px rgba(140, 0, 255, 0.3);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.countdown-floating .label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.countdown-floating .label::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 16l2-2 7 1V7.8L7.2 4H9l7 7v6l6 1v2l-6-1-6 1v-2l6-1v-2l-7-1-7 3z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 6px;
+}
+
+.countdown-floating .timer {
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0; /* behind all content */
+  overflow: hidden;
+}
+
+.lightning {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 2px;
+  height: 200%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 0, 255, 0.4), transparent);
+  animation: strike 5s linear infinite;
+  opacity: 0.5;
+  filter: blur(2px);
+}
+
+.lightning.delay {
+  left: 30%;
+  animation-delay: 2.5s;
+}
+
+@keyframes strike {
+  0% {
+    transform: translateY(-100%) scaleX(0.5);
+    opacity: 0.3;
   }
-  
-  .flight-info {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.4rem;
-    font-size: 0.85rem;
-    letter-spacing: 1.2px;
-    color: var(--accent-light);
-    font-weight: bold;
-    text-transform: uppercase;
+  30% {
+    opacity: 0.6;
   }
-  
-  .flight-info .icon {
-    animation: fly 2s infinite alternate ease-in-out;
-    display: inline-block;
+  50% {
+    transform: translateY(0%) scaleX(1);
+    opacity: 1;
   }
-  
-  .timer {
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #ffffffcc;
+  100% {
+    transform: translateY(100%) scaleX(0.5);
+    opacity: 0;
   }
-  
-  @keyframes fly {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-3px); }
-  }
-  
+}

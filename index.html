@@ -4,19 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alarasucan</title>
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet" />
-  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
+  <!-- Animation Background -->
+  <div class="background-animation">
+    <div class="lightning" style="left: 70%; animation-delay: 1.7s;"></div>
+
+  </div>
+  
+
   <!-- Floating Countdown -->
   <div class="countdown-floating">
-    <div class="flight-info">
-      <span class="icon">✈️</span>
-      <span class="label">BLN ARRIVAL</span>
-    </div>
+    <div class="label">BLN ARRIVAL</div>
     <div id="miniCountdown" class="timer">Loading...</div>
   </div>
 
@@ -30,36 +32,32 @@
   <main>
     <!-- Diary -->
     <section class="glass-card">
-      <h2>📝 Bugün en çok ne titretti?</h2>
+      <h2>Bugün en çok ne titretti?</h2>
       <textarea id="diaryEntry" placeholder="Confess your chaos..."></textarea>
       <button onclick="saveEntry()">Save</button>
     </section>
 
-    <!-- Music -->
-    <section class="glass-card">
-      <h2>🎧 Music</h2>
-      <iframe style="border-radius:12px" 
-  src="https://open.spotify.com/embed/track/2WxuZiYXK0cFq6oyYO5BDd?utm_source=generator" 
-  width="100%" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media" 
-  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-  loading="lazy"></iframe>
+    <!-- Media Row: Music + Video -->
+    <div class="media-row">
+      <section class="glass-card">
+        <h2>Music</h2>
+        <iframe src="https://open.spotify.com/embed/track/2WxuZiYXK0cFq6oyYO5BDd?utm_source=generator"
+          width="100%" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+      </section>
 
-    </section>
-
-    <!-- Video -->
-    <section class="glass-card">
-      <h2>🎥 Video</h2>
-      <iframe width="100%" height="200" 
-  src="https://www.youtube.com/embed/vJucA4FOTSI?start=949" 
-  title="YouTube video player" frameborder="0" 
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-  allowfullscreen></iframe>
-
-    </section>
+      <section class="glass-card">
+        <h2>Video</h2>
+        <iframe width="100%" height="152" src="https://www.youtube.com/embed/vJucA4FOTSI?start=949"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </section>
+    </div>
 
     <!-- Coming Soon -->
     <section class="glass-card">
-      <h2>🧠 Game or Poll (Coming Soon)</h2>
+      <h2>Game or Poll (Coming Soon)</h2>
       <p>Stay tuned for chaos and games...</p>
     </section>
   </main>
@@ -69,7 +67,6 @@
     Made with ☠️ by You & Her | © 2025
   </footer>
 
-  <!-- Script -->
   <script src="js/script.js"></script>
 </body>
 </html>
