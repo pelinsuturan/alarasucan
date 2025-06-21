@@ -34,7 +34,22 @@
   </div>
 
   <!-- Countdown Floating -->
-  <div class="countdown-floating">
+  <div class="countdown-floating enhanced-countdown">
+    <div class="icon">
+      <!-- Futuristic SVG Lightning Icon -->
+      <svg viewBox="0 0 64 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg" class="lightning-icon">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path filter="url(#glow)" fill="#bb33ff" d="M32 2 L24 34 H36 L28 62 L48 26 H36 L44 2 Z"/>
+      </svg>
+    </div>
     <div class="label">BLN ARRIVAL</div>
     <div id="miniCountdown" class="timer">Loading...</div>
   </div>

@@ -355,3 +355,47 @@ footer {
   filter: drop-shadow(0 0 6px #ff66cc);
 }
 
+/* Make countdown area bigger and futuristic */
+.enhanced-countdown {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(30, 0, 40, 0.8);
+  border: 2px solid #bb33ff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 15px #bb33ff;
+  z-index: 10;
+}
+
+.enhanced-countdown .label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.enhanced-countdown .timer {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffccff;
+}
+
+.lightning-icon {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    filter: drop-shadow(0 0 4px #bb33ff);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #ff66ff);
+  }
+  100% {
+    filter: drop-shadow(0 0 4px #bb33ff);
+  }
+}
