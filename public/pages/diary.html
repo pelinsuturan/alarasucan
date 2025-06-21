@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chaos Diary</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a1a, #2e003e);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    .entry {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin: 1rem;
+      width: 250px;
+      box-shadow: 0 0 20px #bb33ff;
+      backdrop-filter: blur(10px);
+      transform: rotate(calc(var(--rotate) * 1deg));
+      position: absolute;
+      top: calc(var(--top) * 1%);
+      left: calc(var(--left) * 1%);
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .container {
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: #ff66cc;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message {
+      margin: 2rem;
+      font-style: italic;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='../index.html'">⬅ Back</button>
+  <div class="container" id="entriesContainer">
+    <p class="message" id="statusMessage">Loading diary entries...</p>
+  </div>
+
+  <script>
+    fetch("/entries")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((entries) => {
+        const container = document.getElementById("entriesContainer");
+        const status = document.getElementById("statusMessage");
+        status.remove();
+
+        if (entries.length === 0) {
+          const msg = document.createElement("p");
+          msg.className = "message";
+          msg.textContent = "No chaos entries yet. Be the first.";
+          container.appendChild(msg);
+        }
+
+        entries.forEach((entry) => {
+          const div = document.createElement("div");
+          div.className = "entry";
+          div.style.setProperty("--rotate", Math.floor(Math.random() * 10 - 5));
+          div.style.setProperty("--top", Math.random() * 80 + 10);
+          div.style.setProperty("--left", Math.random() * 80 + 10);
+          div.innerHTML = `<strong>${entry.date}</strong><p>${entry.text}</p>`;
+          container.appendChild(div);
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to load entries:", err);
+        const container = document.getElementById("entriesContainer");
+        container.innerHTML = `<p class="message">Failed to load diary entries. Server might be down.</p>`;
+      });
+  </script>
+</body>
+</html>

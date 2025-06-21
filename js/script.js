@@ -1,25 +1,25 @@
 // === COUNTDOWN TO 1st SEPTEMBER ===
 function updateCountdown() {
-  const target = new Date("2025-09-01T00:00:00");
+  const targetDate = new Date("2025-09-01T00:00:00");
   const now = new Date();
-  const diff = target - now;
+  const diff = targetDate - now;
 
   if (diff <= 0) {
-    document.getElementById("miniCountdown").textContent = "LANDED!";
+    document.getElementById("miniCountdown").textContent = "🛬 Arrived!";
     return;
   }
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
-  const minutes = Math.floor(diff / (1000 * 60)) % 60;
-  const seconds = Math.floor(diff / 1000) % 60;
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
 
   document.getElementById("miniCountdown").textContent =
-    `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+    `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
 setInterval(updateCountdown, 1000);
-updateCountdown();
+updateCountdown(); // Initial call
 
 // === CHAOS PERSONALITY QUIZ ===
 document.addEventListener("DOMContentLoaded", function () {
@@ -82,3 +82,25 @@ document.addEventListener("DOMContentLoaded", function () {
   //   resultEl.classList.remove("hidden");
   // }
 });
+
+
+function saveEntry() {
+  const entry = document.getElementById("diaryEntry").value.trim();
+  if (!entry) return;
+
+  const existing = JSON.parse(localStorage.getItem("chaosEntries")) || [];
+  existing.push({
+    text: entry,
+    date: new Date().toLocaleString(),
+  });
+
+  localStorage.setItem("chaosEntries", JSON.stringify(existing));
+  document.getElementById("diaryEntry").value = "";
+  alert("Chaos recorded.");
+}
+
+function viewEntries() {
+  window.location.href = "pages/diary.html"; // ✅ correct path after moving
+}
+
+

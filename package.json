@@ -1,0 +1,24 @@
+{
+  "name": "alarasucan",
+  "version": "1.0.0",
+  "description": "A personal and aesthetic countdown page made for fun — dark mode, music, and more.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pelinsuturan/alarasucan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pelinsuturan/alarasucan/issues"
+  },
+  "homepage": "https://github.com/pelinsuturan/alarasucan#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
