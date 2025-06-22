@@ -1,15 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alarasucan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alarasucan</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+/* ==========================
+   Mobile Enhancements
+========================== */
+@media (max-width: 768px) {
+  .countdown-floating,
+  .quick-links {
+    display: none;
+  }
+  .mobile-toggle {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1001;
+    cursor: pointer;
+    font-size: 2rem;
+  }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    bottom: 3rem;
+    right: 1rem;
+    background: rgba(30, 0, 40, 0.9);
+    border: 1px solid #bb33ff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 0 15px #bb33ff;
+    z-index: 1000;
+    max-width: 250px;
+  }
+  .mobile-menu.show {
+    display: block;
+  }
+}
+</style>
 </head>
 <body>
   <!-- Lightning Background + Floating Hearts -->
   <div class="background-animation">
+    <!-- original background lightning and heart SVGs kept -->
     <div class="lightning" style="left: 10%; animation-delay: 0s;"></div>
     <div class="lightning" style="left: 20%; animation-delay: 2s;"></div>
     <div class="lightning" style="left: 40%; animation-delay: 4s;"></div>
@@ -17,11 +53,25 @@
     <div class="lightning" style="left: 80%; animation-delay: 8s;"></div>
     <div class="lightning" style="left: 90%; animation-delay: 10s;"></div>
 
-    <!-- Floating evil hearts -->
-    <svg class="evil-icon" style="left: 10%; animation-delay: 0s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-    <svg class="evil-icon" style="left: 20%; animation-delay: 3s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-    <svg class="evil-icon" style="left: 60%; animation-delay: 6s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-    <svg class="evil-icon" style="left: 90%; animation-delay: 12s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <svg class="evil-icon" style="left: 10%; animation-delay: 0s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5
+      1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3
+      19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+
+    <svg class="evil-icon" style="left: 20%; animation-delay: 3s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5
+      1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3
+      19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+
+    <svg class="evil-icon" style="left: 60%; animation-delay: 6s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5
+      1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3
+      19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+
+    <svg class="evil-icon" style="left: 90%; animation-delay: 12s;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      width="32" height="32" fill="#ff66cc"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.04 2.46-5.5 5.5-5.5
+      1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3
+      19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
   </div>
 
   <!-- Countdown Floating -->
@@ -29,12 +79,8 @@
     <div class="icon">
       <svg viewBox="0 0 64 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg" class="lightning-icon">
         <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+          <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+            <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
         <path filter="url(#glow)" fill="#bb33ff" d="M32 2 L24 34 H36 L28 62 L48 26 H36 L44 2 Z" />
@@ -186,5 +232,18 @@
 
   <!-- Scripts -->
   <script src="js/script.js"></script>
+
+  <!-- Mobile Toggle Scripts -->
+  <div class="mobile-toggle" id="mobileToggle">
+
+  </div>
+
+  <script>
+    const mobileToggle = document.getElementById("mobileToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    mobileToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("show");
+    });
+  </script>
 </body>
 </html>

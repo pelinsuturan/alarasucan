@@ -535,3 +535,43 @@ footer {
 .media-row .glass-card {
   flex: 1;
 }
+
+
+/* ===========================
+   MOBILE COLLAPSIBLE STYLES
+=========================== */
+@media screen and (max-width: 768px) {
+  .countdown-floating,
+  .quick-links {
+    display: none;
+  }
+
+  .countdown-toggle,
+  .quicklinks-toggle {
+    position: fixed;
+    right: 1rem;
+    padding: 0.5rem;
+    background: rgba(30, 0, 40, 0.8);
+    border-radius: 50%;
+    border: 2px solid #ff66ff;
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  .countdown-toggle {
+    top: 1rem;
+  }
+
+  .quicklinks-toggle {
+    bottom: 1rem;
+  }
+
+  .countdown-wrapper.active .countdown-floating,
+  .quicklinks-wrapper.active .quick-links {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
