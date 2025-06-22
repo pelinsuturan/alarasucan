@@ -1,65 +1,68 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const app = express();
-
-// ✅ IMPORTANT: Use process.env.PORT for Render
 const PORT = process.env.PORT || 3000;
 
-const DATA_FILE = path.join(__dirname, 'data', 'entries.json');
+app.use(cors());
+app.use(bodyParser.json());
 
-// Middleware
-app.use(express.static('public'));
-app.use(express.json());
+const ENTRIES_FILE = path.join(__dirname, 'data', 'entries.json');
 
-/**
- * Get all diary entries
- */
-app.get('/entries', (req, res) => {
-  if (fs.existsSync(DATA_FILE)) {
-    const data = fs.readFileSync(DATA_FILE, 'utf-8');
-    res.json(JSON.parse(data));
-  } else {
-    res.json([]);
+function loadEntries() {
+  if (!fs.existsSync(ENTRIES_FILE)) {
+    fs.writeFileSync(ENTRIES_FILE, JSON.stringify([]));
   }
+  return JSON.parse(fs.readFileSync(ENTRIES_FILE, 'utf8'));
+}
+
+function saveEntries(data) {
+  fs.writeFileSync(ENTRIES_FILE, JSON.stringify(data, null, 2));
+}
+
+// ⚡️ API ENDPOINTS
+app.get('/api/entries', (req, res) => {
+  res.json(loadEntries());
 });
 
-/**
- * Save a new diary entry
- */
-app.post('/entries', (req, res) => {
-  const { text, alias } = req.body;
-
-  if (!text || text.trim() === '') {
-    return res.status(400).json({ success: false, message: 'Text is required.' });
-  }
-
-  const newEntry = {
-    text: text.trim(),
-    alias: alias?.trim() || '', // Save alias if present
+app.post('/api/entries', (req, res) => {
+  const entries = loadEntries();
+  const entry = {
+    text: req.body.text,
     date: new Date().toLocaleString(),
   };
-  
-  let entries = [];
-  if (fs.existsSync(DATA_FILE)) {
-    entries = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
-  }
-
-  entries.push(newEntry);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(entries, null, 2));
-
-  res.json({ success: true, entry: newEntry });
+  entries.push(entry);
+  saveEntries(entries);
+  res.json({ success: true, entry });
 });
 
-/**
- * Route for root to serve the main page
- */
-app.get('/', (req, res) => {
+app.put('/api/entries/:index', (req, res) => {
+  const entries = loadEntries();
+  const index = parseInt(req.params.index, 10);
+  if (index < 0 || index >= entries.length) {
+    return res.status(404).json({ error: 'Entry not found' });
+  }
+  entries[index] = {
+    ...entries[index],
+    text: req.body.text,
+    date: new Date().toLocaleString(),
+  };
+  saveEntries(entries);
+  res.json({ success: true, entry: entries[index] });
+});
+
+// ⚡️ Serve static site
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route for SPA or static site
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ✅ Start the server
+// ⚡️ START SERVER
 app.listen(PORT, () => {
-  console.log(`🔥 Server running at http://localhost:${PORT}`);
+  console.log(`Server is running at http://localhost:${PORT}`);
 });

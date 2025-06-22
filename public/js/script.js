@@ -253,3 +253,28 @@ playButtons.forEach(button => {
     }
   });
 });
+
+
+
+// GET
+fetch('/api/entries')
+  .then(res => res.json())
+  .then(data => {
+    // do stuff
+  });
+
+// POST
+fetch("/api/entries", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text, alias })
+})
+
+// PUT
+fetch('/api/entries/1', {
+  method: 'PUT',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({ text: 'updated text' })
+});
+
+
