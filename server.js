@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const db = require('./database'); // ✅ Import database.js
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,57 +10,44 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const DATA_DIR = path.join(__dirname, 'data');
-const ENTRIES_FILE = path.join(DATA_DIR, 'entries.json');
+/**
+ * ⚡️ API ENDPOINTS
+ */
 
-// ✅ Ensure the data directory and entries.json file exist
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR);
-}
-if (!fs.existsSync(ENTRIES_FILE)) {
-  fs.writeFileSync(ENTRIES_FILE, JSON.stringify([], null, 2));
-}
-
-// ⚡️ Helper Functions
-function loadEntries() {
-  return JSON.parse(fs.readFileSync(ENTRIES_FILE, 'utf8'));
-}
-
-function saveEntries(data) {
-  fs.writeFileSync(ENTRIES_FILE, JSON.stringify(data, null, 2));
-}
-
-// ⚡️ API ENDPOINTS
+// GET all entries
 app.get('/api/entries', (req, res) => {
-  res.json(loadEntries());
+  const rows = db.prepare('SELECT * FROM entries ORDER BY id DESC').all();
+  res.json(rows);
 });
 
+// POST new entry
 app.post('/api/entries', (req, res) => {
-  const entries = loadEntries();
   const entry = {
     text: req.body.text,
     date: new Date().toLocaleString(),
   };
-  entries.push(entry);
-  saveEntries(entries);
+  const stmt = db.prepare('INSERT INTO entries (text, date) VALUES (?, ?)');
+  const result = stmt.run(entry.text, entry.date);
+  entry.id = result.lastInsertRowid;
+
   res.json({ success: true, entry });
 });
 
+// PUT update entry
 app.put('/api/entries/:index', (req, res) => {
-  const entries = loadEntries();
-  const index = parseInt(req.params.index, 10);
-
-  if (index < 0 || index >= entries.length) {
-    return res.status(404).json({ error: 'Entry not found' });
-  }
-
-  entries[index] = {
-    ...entries[index],
+  const id = parseInt(req.params.index, 10);
+  const entry = {
     text: req.body.text,
     date: new Date().toLocaleString(),
   };
-  saveEntries(entries);
-  res.json({ success: true, entry: entries[index] });
+  const stmt = db.prepare('UPDATE entries SET text = ?, date = ? WHERE id = ?');
+  const result = stmt.run(entry.text, entry.date, id);
+
+  if (result.changes === 0) {
+    return res.status(404).json({ error: 'Entry not found' });
+  }
+
+  res.json({ success: true, entry: { id, ...entry } });
 });
 
 // ⚡️ Serve static site
