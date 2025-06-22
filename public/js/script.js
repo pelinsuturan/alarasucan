@@ -1,26 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // === COUNTDOWN ===
-  function updateCountdown() {
-    const targetDate = new Date("2025-09-01T00:00:00");
-    const now = new Date();
-    const diff = targetDate - now;
+  // === COUNTDOWN TO 1st SEPTEMBER ===
+// === COUNTDOWN TO 1st SEPTEMBER ===
+function updateCountdown() {
+  const targetDate = new Date("2025-09-01T00:00:00");
+  const now = new Date();
+  const diff = targetDate - now;
 
-    const countdownEl = document.getElementById("miniCountdown");
-    if (!countdownEl) return;
+  const countdownEl = document.getElementById("miniCountdown");
 
-    if (diff <= 0) {
-      countdownEl.textContent = "🛬 Arrived!";
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  if (!countdownEl) {
+    console.error("Countdown element (#miniCountdown) not found in the DOM.");
+    return;
   }
 
+  if (diff <= 0) {
+    countdownEl.textContent = "🛬 Arrived!";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+// Run immediately and every second
+document.addEventListener("DOMContentLoaded", function () {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
+
+
+  // Call countdown every second
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
@@ -79,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
         q2: document.querySelector('input[name="q2"]:checked')?.value,
         q3: document.querySelector('input[name="q3"]:checked')?.value,
       };
-
       if (!answers.q1 || !answers.q2 || !answers.q3) {
         resultEl.innerHTML = "⚠️ Please answer all questions.";
         resultEl.classList.remove("hidden");
@@ -103,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
         `,
         // Add more combos as needed
       };
-
       const resultText = combos[key] || `
         <strong>🔮 Undefined Chaos</strong><br />
         You’re unclassifiable. One of one.
