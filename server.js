@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const db = require('../database'); // ✅ Import database.js
+const db = require('./database'); // ✅ Import database.js
 
 const app = express();
 const PORT = process.env.PORT || 3000;
