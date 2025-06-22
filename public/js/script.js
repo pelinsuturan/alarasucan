@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // === COUNTDOWN TO 1st SEPTEMBER ===
-// === COUNTDOWN TO 1st SEPTEMBER ===
+// ===========================
+// Countdown Logic
+// ===========================
 function updateCountdown() {
   const targetDate = new Date("2025-09-01T00:00:00");
   const now = new Date();
@@ -26,18 +26,17 @@ function updateCountdown() {
   countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
-// Run immediately and every second
+// ===========================
+// MAIN INIT
+// ===========================
 document.addEventListener("DOMContentLoaded", function () {
+  // Start Countdown
   updateCountdown();
   setInterval(updateCountdown, 1000);
-});
 
-
-  // Call countdown every second
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
-
-  // === DIARY FORM ===
+  // ===========================
+  // DIARY FORM
+  // ===========================
   const chaosForm = document.getElementById("chaosForm");
   const viewBtn = document.getElementById("viewEntriesBtn");
 
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chaosForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const text = document.getElementById("chaosInput").value.trim();
+      const alias = document.getElementById("aliasInput")?.value.trim() || "anon";
 
       if (!text) {
         alert("You can't send empty chaos!");
@@ -53,10 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       fetch("/entries", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, alias }),
       })
         .then((res) => res.json())
         .then((data) => {
@@ -101,33 +99,130 @@ document.addEventListener("DOMContentLoaded", function () {
       const key = `${answers.q1}_${answers.q2}_${answers.q3}`;
 
       const combos = {
+        // bed + kalpsizsin
         "bed_kalpsizsin_asalet": `
-          <strong>💔 The Heartless Queen</strong><br/>
-          Cold, elegant, a slow burn. You destroy feelings with a quiet smile. You walk away like you’ve never been there — a classy ice queen who knows how to haunt.
+          <strong>👑 The Ice Queen</strong><br/>
+          Calm, elegant, and calculated. You destroy feelings with precision and walk away like a sculpture — timeless and cold.
         `,
-        "smirk_netdmusic_teror": `
-          <strong>⚔️ The Comeback Machine</strong><br/>
-          Sarcastic, sharp, always ready with a savage comeback. Drama is your runway, and toxicity is your favorite accessory. You sting with a wink and disappear like a boss.
-        `,
-        "rage_netdmusic_teror": `
-          <strong>🌪️ The Pure Rager</strong><br/>
-          Pure chaos personified. Explosions are your love language. You don’t just break the plate — you smash the whole kitchen. Pure energy. Pure anarchy.
-        `,
-        "bed_iyeoka_yokluk": `
-          <strong>🌙 The Melancholic Ghost</strong><br/>
-          You haunt with silence. Sad, elegant, unforgettable. You don’t scream, you whisper. But when you’re gone, your absence is the storm. Forever on their mind.
-        `,
-        "smirk_iyeoka_teror": `
-          <strong>⚡️ The Electric Phantom</strong><br/>
-          Neon energy and midnight mystery. You’re here one second, gone the next. Pure electric thrill. You short-circuit the room and disappear with a wink.
+        "bed_kalpsizsin_teror": `
+          <strong>❄️ The Frigid Storm</strong><br/>
+          You haunt with silence and suffocation. Pure terror masked as tranquility. You walk away knowing no one can forget the chill you left.
         `,
         "bed_kalpsizsin_yokluk": `
-          <strong>🕳️ The Quiet Void</strong><br/>
-          The silence that kills. You own the space you never fill. Calm, quiet, and devastating. No words needed. Just a void where chaos used to be.
+          <strong>🌊 The Quiet Abyss</strong><br/>
+          You disappear like mist over water. Graceful, serene, and absolutely haunting. The silence you leave is the sound of heartbreak.
         `,
+      
+        // bed + netdmusic
+        "bed_netdmusic_asalet": `
+          <strong>⚔️ The Calm Avenger</strong><br/>
+          You have the patience to wait for the right moment. You sting when no one’s looking, and it burns long after.
+        `,
+        "bed_netdmusic_teror": `
+          <strong>🔥 The Rage In Silk</strong><br/>
+          Pure emotion wrapped in a veil of grace. You explode when least expected, making every scene an unforgettable climax.
+        `,
+        "bed_netdmusic_yokluk": `
+          <strong>🌪️ The Disappeared Wound</strong><br/>
+          You leave like a ghost, and the silence you leave burns louder than words. The damage you cause lingers forever.
+        `,
+      
+        // bed + iyeoka
+        "bed_iyeoka_asalet": `
+          <strong>🌙 The Melancholic Monarch</strong><br/>
+          Pure poise. You haunt memories like a timeless melody. No one forgets your silence.
+        `,
+        "bed_iyeoka_teror": `
+          <strong>☠️ The Terrifying Muse</strong><br/>
+          You haunt thoughts like a lyric. Pure terror masked in beauty, making every heartbreak feel like doom.
+        `,
+        "bed_iyeoka_yokluk": `
+          <strong>👻 The Ghost of Elegance</strong><br/>
+          You disappear like mist and linger like a whisper. Pure poetry, pure heartbreak.
+        `,
+      
+        // smirk + kalpsizsin
         "smirk_kalpsizsin_asalet": `
           <strong>👑 The Chaotic Aristocrat</strong><br/>
-          Pure grace, sharp tongue. You cause collapse with a wink and a smirk. The type that drops a line and leaves the room like it’s a runway. Pure, classy destruction.
+          Pure grace, sharp tongue. You cause collapse with a wink and leave like it's a runway. Pure, classy destruction.
+        `,
+        "smirk_kalpsizsin_teror": `
+          <strong>☄️ The Electric Menace</strong><br/>
+          You swoop in, drop a line, and watch everything burn. Pure terror in the guise of a smile.
+        `,
+        "smirk_kalpsizsin_yokluk": `
+          <strong>🌫️ The Disappearing Trick</strong><br/>
+          You leave as soon as you arrive, and the void you create is felt for years. Pure ghost.
+        `,
+      
+        // smirk + netdmusic
+        "smirk_netdmusic_asalet": `
+          <strong>💃 The Drama Queen</strong><br/>
+          Pure flair. Pure show. Pure dominance. You kill with a wink and walk away like it's all a scene.
+        `,
+        "smirk_netdmusic_teror": `
+          <strong>⚡️ The Comeback Machine</strong><br/>
+          Pure sting, sharp as lightning. You appear out of nowhere, drop a line, and disappear like a storm.
+        `,
+        "smirk_netdmusic_yokluk": `
+          <strong>🌊 The Wave of Silence</strong><br/>
+          You rise like a wave, destroy, and vanish like mist. Pure devastation disguised as beauty.
+        `,
+      
+        // smirk + iyeoka
+        "smirk_iyeoka_asalet": `
+          <strong>🌙 The Elusive Siren</strong><br/>
+          Pure allure. Pure mystery. Pure heartbreak. You draw them in like the tide and disappear like mist.
+        `,
+        "smirk_iyeoka_teror": `
+          <strong>☠️ The Phantom Trickster</strong><br/>
+          Pure terror wrapped in poetry. You haunt memories like a midnight whisper.
+        `,
+        "smirk_iyeoka_yokluk": `
+          <strong>🌫️ The Ghost of Memories</strong><br/>
+          Pure silence. Pure heartbreak. Pure absence. You haunt like mist long after you’ve gone.
+        `,
+      
+        // rage + kalpsizsin
+        "rage_kalpsizsin_asalet": `
+          <strong>🔥 The Queen of Scars</strong><br/>
+          Pure flame and grace. You burn bridges and walk away like a masterpiece. Pure heartbreak, pure beauty.
+        `,
+        "rage_kalpsizsin_teror": `
+          <strong>☄️ The Pure Cataclysm</strong><br/>
+          Pure destruction. Pure terror. Pure chaos. You don’t wait for endings — you create them.
+        `,
+        "rage_kalpsizsin_yokluk": `
+          <strong>🌑 The Voidbringer</strong><br/>
+          Pure silence. Pure desolation. Pure heartbreak. You destroy worlds and disappear like mist.
+        `,
+      
+        // rage + netdmusic
+        "rage_netdmusic_asalet": `
+          <strong>🔥 The Royal Rager</strong><br/>
+          Pure flames. Pure dominance. Pure pride. You walk into the room, burn it down, and leave like a god.
+        `,
+        "rage_netdmusic_teror": `
+          <strong>☠️ The Pure Terror</strong><br/>
+          Pure fury. Pure wrath. Pure ruin. You destroy everything in your path and walk away like it's nothing.
+        `,
+        "rage_netdmusic_yokluk": `
+          <strong>🌊 The Sea of Silence</strong><br/>
+          Pure emotion. Pure heartbreak. Pure silence. You leave like a storm and haunt like a wave.
+        `,
+      
+        // rage + iyeoka
+        "rage_iyeoka_asalet": `
+          <strong>🌙 The Storm Siren</strong><br/>
+          Pure emotion. Pure beauty. Pure devastation. You draw them in like a wave and disappear like mist.
+        `,
+        "rage_iyeoka_teror": `
+          <strong>☄️ The Haunting Inferno</strong><br/>
+          Pure terror. Pure flame. Pure silence. You burn long after the room goes quiet.
+        `,
+        "rage_iyeoka_yokluk": `
+          <strong>🌑 The Final Eclipse</strong><br/>
+          Pure void. Pure heartbreak. Pure silence. You destroy quietly and haunt endlessly.
         `
       };
       const resultText = combos[key] || `

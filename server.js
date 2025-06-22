@@ -29,7 +29,7 @@ app.get('/entries', (req, res) => {
  * Save a new diary entry
  */
 app.post('/entries', (req, res) => {
-  const { text } = req.body;
+  const { text, alias } = req.body;
 
   if (!text || text.trim() === '') {
     return res.status(400).json({ success: false, message: 'Text is required.' });
@@ -37,12 +37,15 @@ app.post('/entries', (req, res) => {
 
   const newEntry = {
     text: text.trim(),
+    alias: alias?.trim() || '', // Save alias if present
     date: new Date().toLocaleString(),
   };
+  
   let entries = [];
   if (fs.existsSync(DATA_FILE)) {
     entries = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
   }
+
   entries.push(newEntry);
   fs.writeFileSync(DATA_FILE, JSON.stringify(entries, null, 2));
 
@@ -60,4 +63,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🔥 Server running at http://localhost:${PORT}`);
 });
-

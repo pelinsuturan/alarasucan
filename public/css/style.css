@@ -420,3 +420,26 @@ footer {
   transform: scale(1.1);
   background: linear-gradient(135deg, #ff66ff, #bb33ff);
 }
+
+
+/* Alias Styling */
+.alias-box {
+  margin: 0.5rem 0;
+}
+
+.alias-input {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  color: #ff99ff;
+  background: rgba(255, 102, 204, 0.1);
+  border: 1px solid #ff66cc;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.alias-input:focus {
+  border-color: #bb33ff;
+  box-shadow: 0px 0px 12px #ff66ff;
+}
