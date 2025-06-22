@@ -3,16 +3,25 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
 
-// Define path to store entries
-const DATA_FILE = path.join(__dirname, 'data', 'entries.json');
+// ✅ Use the port assigned by Render or fall back to 3000
+const PORT = process.env.PORT || 3000;
 
-// Middleware to serve static files and parse JSON
-app.use(express.static('public'));
+const DATA_DIR = path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'entries.json');
+
+// Ensure the data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR);
+}
+
+// Middleware for static files and JSON
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-// Get all diary entries
+/**
+ * Get all diary entries
+ */
 app.get('/entries', (req, res) => {
   if (fs.existsSync(DATA_FILE)) {
     const data = fs.readFileSync(DATA_FILE, 'utf-8');
@@ -22,7 +31,9 @@ app.get('/entries', (req, res) => {
   }
 });
 
-// Save a new diary entry
+/**
+ * Save a new diary entry
+ */
 app.post('/entries', (req, res) => {
   const { text } = req.body;
 
@@ -34,7 +45,7 @@ app.post('/entries', (req, res) => {
     text: text.trim(),
     date: new Date().toLocaleString(),
   };
-
+  
   let entries = [];
   if (fs.existsSync(DATA_FILE)) {
     entries = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
@@ -46,7 +57,12 @@ app.post('/entries', (req, res) => {
   res.json({ success: true, entry: newEntry });
 });
 
-// Start server
+// Route for root to serve the main page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Start the server
 app.listen(PORT, () => {
-  console.log(`🔥 Diary server running at http://localhost:${PORT}`);
+  console.log(`🔥 Server running at http://localhost:${PORT}`);
 });
