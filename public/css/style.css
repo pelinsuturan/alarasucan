@@ -399,3 +399,24 @@ footer {
     filter: drop-shadow(0 0 4px #bb33ff);
   }
 }
+
+
+/* Play Butoons music */
+.play-button {
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  margin-left: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #bb33ff, #ff66ff);
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0px 0px 3px #000;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.play-button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #ff66ff, #bb33ff);
+}
