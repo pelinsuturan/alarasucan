@@ -10,12 +10,19 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const ENTRIES_FILE = path.join(__dirname, 'data', 'entries.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const ENTRIES_FILE = path.join(DATA_DIR, 'entries.json');
 
+// ✅ Ensure the data directory and entries.json file exist
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR);
+}
+if (!fs.existsSync(ENTRIES_FILE)) {
+  fs.writeFileSync(ENTRIES_FILE, JSON.stringify([], null, 2));
+}
+
+// ⚡️ Helper Functions
 function loadEntries() {
-  if (!fs.existsSync(ENTRIES_FILE)) {
-    fs.writeFileSync(ENTRIES_FILE, JSON.stringify([]));
-  }
   return JSON.parse(fs.readFileSync(ENTRIES_FILE, 'utf8'));
 }
 
@@ -42,9 +49,11 @@ app.post('/api/entries', (req, res) => {
 app.put('/api/entries/:index', (req, res) => {
   const entries = loadEntries();
   const index = parseInt(req.params.index, 10);
+
   if (index < 0 || index >= entries.length) {
     return res.status(404).json({ error: 'Entry not found' });
   }
+
   entries[index] = {
     ...entries[index],
     text: req.body.text,
