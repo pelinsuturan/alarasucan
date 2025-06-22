@@ -4,19 +4,13 @@ const path = require('path');
 
 const app = express();
 
-// ✅ Use the port assigned by Render or fall back to 3000
+// ✅ IMPORTANT: Use process.env.PORT for Render
 const PORT = process.env.PORT || 3000;
 
-const DATA_DIR = path.join(__dirname, 'data');
-const DATA_FILE = path.join(DATA_DIR, 'entries.json');
+const DATA_FILE = path.join(__dirname, 'data', 'entries.json');
 
-// Ensure the data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR);
-}
-
-// Middleware for static files and JSON
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware
+app.use(express.static('public'));
 app.use(express.json());
 
 /**
@@ -45,24 +39,25 @@ app.post('/entries', (req, res) => {
     text: text.trim(),
     date: new Date().toLocaleString(),
   };
-  
   let entries = [];
   if (fs.existsSync(DATA_FILE)) {
     entries = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
   }
-
   entries.push(newEntry);
   fs.writeFileSync(DATA_FILE, JSON.stringify(entries, null, 2));
 
   res.json({ success: true, entry: newEntry });
 });
 
-// Route for root to serve the main page
+/**
+ * Route for root to serve the main page
+ */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start the server
+// ✅ Start the server
 app.listen(PORT, () => {
   console.log(`🔥 Server running at http://localhost:${PORT}`);
 });
+
