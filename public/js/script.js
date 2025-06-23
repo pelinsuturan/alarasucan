@@ -288,3 +288,62 @@ playButtons.forEach(button => {
 
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const heartBtn = document.getElementById('heart-effect-btn');
+  const lightningBtn = document.getElementById('lightning-effect-btn');
+  const confettiBtn = document.getElementById('confetti-effect-btn');
+  const effectsContainer = document.getElementById('effects-container');
+
+  if (heartBtn) {
+      heartBtn.addEventListener('click', () => {
+          for (let i = 0; i < 30; i++) {
+              const particle = document.createElement('div');
+              particle.className = 'heart-particle';
+              
+              const angle = Math.random() * 360;
+              const distance = Math.random() * (window.innerWidth / 2);
+              const tx = Math.cos(angle * Math.PI / 180) * distance + 'px';
+              const ty = Math.sin(angle * Math.PI / 180) * distance + 'px';
+
+              particle.style.setProperty('--tx', tx);
+              particle.style.setProperty('--ty', ty);
+              
+              effectsContainer.appendChild(particle);
+              setTimeout(() => particle.remove(), 2000);
+          }
+      });
+  }
+
+  if (lightningBtn) {
+      lightningBtn.addEventListener('click', () => {
+          for (let i = 0; i < 5; i++) {
+              const lightning = document.createElement('div');
+              lightning.className = 'lightning';
+              lightning.style.left = Math.random() * 100 + '%';
+              lightning.style.animationDelay = Math.random() * 0.5 + 's';
+              lightning.style.animationDuration = '2s'; // Make it faster
+              
+              effectsContainer.appendChild(lightning);
+              setTimeout(() => lightning.remove(), 2500);
+          }
+      });
+  }
+
+  if (confettiBtn) {
+      confettiBtn.addEventListener('click', () => {
+          const colors = ['#8f00ff', '#cc66ff', '#ff99ff', '#ffffff'];
+          for (let i = 0; i < 100; i++) {
+              const particle = document.createElement('div');
+              particle.className = 'confetti-particle';
+              
+              particle.style.left = Math.random() * 100 + 'vw';
+              particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+              particle.style.animationDelay = Math.random() * 2 + 's';
+              
+              effectsContainer.appendChild(particle);
+              setTimeout(() => particle.remove(), 3000);
+          }
+      });
+  }
+});
+

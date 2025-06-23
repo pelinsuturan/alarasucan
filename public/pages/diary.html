@@ -16,26 +16,22 @@
     }
 
     .entry {
-      position: relative;
-      display: inline-block;
-      margin: 1rem;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border-radius: 1rem;
-      padding: 1rem;
-      width: 250px;
-      box-shadow: 0 0 20px #bb33ff;
-      backdrop-filter: blur(10px);
-      animation: fadeIn 0.8s ease, floatAround 10s ease-in-out infinite;
-}
+        position: absolute; /* Change from 'relative' to 'absolute' */
+        margin: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-radius: 1rem;
+        padding: 1rem;
+        width: 250px;
+        box-shadow: 0 0 20px #bb33ff;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.8s ease, floatAround 12s ease-in-out infinite alternate; /* Slower and smoother animation */
+    }
 
     .container {
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 3rem 1rem;
+        position: relative; /* This is correct */
+        width: 100%;
+        height: 100vh; /* Ensure container has a fixed height */
     }
 
     .back-btn {
@@ -117,27 +113,47 @@
           msg.className = "message";
           msg.textContent = "No chaos entries yet. Be the first.";
           container.appendChild(msg);
+          return;
+        }
+
+        const placedEntries = [];
+        const entryWidth = 282; // width (250) + padding (16*2) + margin (16)
+        const entryHeight = 150; // Approximate height, adjust if needed
+
+        function isOverlapping(newEntry) {
+          for (const placed of placedEntries) {
+            if (
+              newEntry.left < placed.left + placed.width &&
+              newEntry.left + newEntry.width > placed.left &&
+              newEntry.top < placed.top + placed.height &&
+              newEntry.top + newEntry.height > placed.top
+            ) {
+              return true;
+            }
+          }
+          return false;
         }
 
         entries.forEach((entry) => {
           const div = document.createElement("div");
           div.className = "entry";
-
-          // Random position
-          const topPosition = Math.random() * 80 + 10;
-          const leftPosition = Math.random() * 80 + 10;
-
-          div.style.top = `${topPosition}%`;
-          div.style.left = `${leftPosition}%`;
-
-          // Alias display
-          const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
-
-
-          div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
-
-
           
+          const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
+          div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
+          
+          let position;
+          let attempts = 0;
+          do {
+            const top = Math.random() * (container.clientHeight - entryHeight);
+            const left = Math.random() * (container.clientWidth - entryWidth);
+            position = { top, left, width: entryWidth, height: entryHeight };
+            attempts++;
+          } while (isOverlapping(position) && attempts < 100);
+
+          div.style.top = `${position.top}px`;
+          div.style.left = `${position.left}px`;
+          
+          placedEntries.push(position);
           container.appendChild(div);
         });
       })

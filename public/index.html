@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QECBMSLBC3"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,7 +11,6 @@
 
   gtag('config', 'G-QECBMSLBC3');
 </script>
-<!-- Google Analytics Tag END -->
 <title>Alarasucan</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
@@ -53,9 +51,9 @@
 </style>
 </head>
 <body>
-  <!-- Lightning Background + Floating Hearts -->
+  <div id="effects-container"></div>
+
   <div class="background-animation">
-    <!-- original background lightning and heart SVGs kept -->
     <div class="lightning" style="left: 10%; animation-delay: 0s;"></div>
     <div class="lightning" style="left: 20%; animation-delay: 2s;"></div>
     <div class="lightning" style="left: 40%; animation-delay: 4s;"></div>
@@ -84,31 +82,12 @@
       19.54 3 22 5.46 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
   </div>
 
-  <!-- Countdown Floating -->
-  <div class="countdown-floating enhanced-countdown">
-    <div class="icon">
-      <svg viewBox="0 0 64 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg" class="lightning-icon">
-        <defs>
-          <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-            <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-        <path filter="url(#glow)" fill="#bb33ff" d="M32 2 L24 34 H36 L28 62 L48 26 H36 L44 2 Z" />
-      </svg>
-    </div>
-    <div class="label">BLN ARRIVAL</div>
-    <div id="miniCountdown" class="timer">Loading...</div>
-  </div>
-
-  <!-- Header -->
   <header>
     <h1 class="glow-text">ALARASUCAN</h1>
     <p class="tagline">★ SIKINTILI. ALTIN. KIZLAR. ★</p>
   </header>
 
-  <!-- Main Content -->
   <main>
-    <!-- Diary Section -->
     <section class="glass-card">
       <h2>Bugün en çok ne titretti?</h2>
       <form id="chaosForm">
@@ -126,7 +105,6 @@
       </form>
     </section>
 
-    <!-- Media Row -->
     <div class="media-row">
       <section class="glass-card">
         <h2>Music</h2>
@@ -139,11 +117,9 @@
       </section>
     </div>
 
-    <!-- Chaos Quiz Section -->
     <section class="glass-card edgy glow-card" id="quizSection">
       <h2>Chaos Persona Quiz</h2>
       <form id="chaosQuiz">
-        <!-- Q1 -->
         <div class="quiz-question">
           <p>1. What’s your ideal chaos tool?</p>
           <label><input type="radio" name="q1" value="bed"> Yatak</label><br />
@@ -151,7 +127,6 @@
           <label><input type="radio" name="q1" value="rage"> Temiz bir rage</label>
         </div>
 
-        <!-- Q2 -->
         <div class="quiz-question">
           <p>2. Pick a soundtrack for your breakdown:</p>
           
@@ -186,7 +161,6 @@
           ></iframe>
         </div>
 
-        <!-- Q3 -->
         <div class="quiz-question">
           <p>3. What chaos vibe do you emit?</p>
           <label><input type="radio" name="q3" value="asalet"> Asaletle sündürme</label><br />
@@ -199,14 +173,11 @@
       <div id="quizResult" class="quiz-result hidden"></div>
     </section>
 
-    <!-- New Render-style 3 Section Row -->
     <section class="three-section-row">
-      <!-- Box 1: Quote of the Day -->
       <div class="section-box">
         <h3>💫 Quote of the Day</h3>
         <p class="quote">Did you know? An octopus has three hearts, and two of them stop beating when it swims! 🐙💙</p>
       </div>
-      <!-- Box 2: Ask Admin -->
       <div class="section-box">
         <h3>❓ Ask Admin</h3>
         <form id="askAdminForm">
@@ -214,36 +185,50 @@
           <button type="submit">Send</button>
         </form>
       </div>
-      <!-- Box 3: World Tag Map -->
       <div class="section-box">
-        <h3>🌍 World Tag Map</h3>
-        <div id="worldMap">
-          <p>Coming soon: an interactive map where you can tag your favorite cities!</p>
+        <h3>✨ Special Effects</h3>
+        <p>Unleash a little chaos. Try one of the effects below.</p>
+        <div class="effects-buttons">
+        <button id="heart-effect-btn">Heart Burst</button>
+        <button id="lightning-effect-btn">Lightning Storm</button>
+        <button id="confetti-effect-btn">Confetti Party</button>
         </div>
+      </div>
       </div>
     </section>
   </main>
 
-  <!-- Quick Links -->
-  <section class="quick-links">
-    <h3>Useful Links</h3>
-    <ul>
-      <li><a href="https://app.digital.diplo.de/registration?at=4d513dee-7810-4d8e-84e2-5387fc2e5fef&n=&c=visa_dynamic_study&d-id=0c6ad69a-76a6-4df3-ac14-4ef0074c4ce7" target="_blank">DE Visa Portal</a></li>
-      <li><a href="https://visa.vfsglobal.com/tur/tr/fra/interim" target="_blank">FR Visa Application</a></li>
-      <li><a href="https://dribbble.com/" target="_blank">Dribbble</a></li>
-      <li><a href="https://miro.com/app/dashboard/" target="_blank">Miro Board</a></li>
-    </ul>
-  </section>
+  <div class="mobile-footer">
+    <div class="countdown-floating enhanced-countdown">
+      <div class="icon">
+        <svg viewBox="0 0 64 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg" class="lightning-icon">
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+              <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <path filter="url(#glow)" fill="#bb33ff" d="M32 2 L24 34 H36 L28 62 L48 26 H36 L44 2 Z" />
+        </svg>
+      </div>
+      <div class="label">BLN ARRIVAL</div>
+      <div id="miniCountdown" class="timer">Loading...</div>
+    </div>
 
-  <!-- Footer -->
-  <footer>
+    <section class="quick-links">
+      <h3>Useful Links</h3>
+      <ul>
+        <li><a href="https://app.digital.diplo.de/registration?at=4d513dee-7810-4d8e-84e2-5387fc2e5fef&n=&c=visa_dynamic_study&d-id=0c6ad69a-76a6-4df3-ac14-4ef0074c4ce7" target="_blank">DE Visa Portal</a></li>
+        <li><a href="https://visa.vfsglobal.com/tur/tr/fra/interim" target="_blank">FR Visa Application</a></li>
+        <li><a href="https://dribbble.com/" target="_blank">Dribbble</a></li>
+        <li><a href="https://miro.com/app/dashboard/" target="_blank">Miro Board</a></li>
+      </ul>
+    </section>
+  </div> <footer>
     Built by Berlinsu | © 2025
   </footer>
 
-  <!-- Scripts -->
   <script src="js/script.js"></script>
 
-  <!-- Mobile Toggle Scripts -->
   <div class="mobile-toggle" id="mobileToggle">
 
   </div>

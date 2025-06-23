@@ -541,37 +541,133 @@ footer {
    MOBILE COLLAPSIBLE STYLES
 =========================== */
 @media screen and (max-width: 768px) {
+  /* This rule hides the original desktop elements on mobile */
   .countdown-floating,
   .quick-links {
     display: none;
   }
 
-  .countdown-toggle,
-  .quicklinks-toggle {
-    position: fixed;
-    right: 1rem;
-    padding: 0.5rem;
-    background: rgba(30, 0, 40, 0.8);
-    border-radius: 50%;
-    border: 2px solid #ff66ff;
-    backdrop-filter: blur(8px);
-    cursor: pointer;
-    z-index: 1000;
+  /* Add space at the bottom of the main content area */
+  main {
+    padding-bottom: 150px; 
   }
 
-  .countdown-toggle {
-    top: 1rem;
+  /* These are the styles for the new mobile-only footer */
+  .mobile-footer {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 0.5rem;
+      background: rgba(15, 5, 20, 0.9);
+      border-top: 1px solid #bb33ff;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
   }
 
-  .quicklinks-toggle {
-    bottom: 1rem;
+  /* These rules make the elements inside .mobile-footer visible again and style them */
+  .mobile-footer .countdown-floating,
+  .mobile-footer .quick-links {
+      display: flex !important;
+      flex-direction: column;
+      position: static;
+      width: 48%;
+      border: none;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      text-align: center;
   }
 
-  .countdown-wrapper.active .countdown-floating,
-  .quicklinks-wrapper.active .quick-links {
-    display: flex;
-    flex-direction: column;
+  .mobile-footer .quick-links h3,
+  .mobile-footer .countdown-floating .label {
+      font-size: 1rem;
+      text-align: center;
+      width: 100%;
+  }
+
+  .mobile-footer .quick-links ul {
+    font-size: 0.8rem;
+  }
+  
+  .mobile-footer .countdown-floating {
+      align-items: center;
   }
 }
 
+
+
+/* ===========================
+   SPECIAL EFFECTS STYLES
+=========================== */
+
+#effects-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Allows clicks to go through to the page below */
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.effects-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.effects-buttons button {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.8rem;
+}
+
+/* Heart Effect */
+.heart-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff66cc'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 0-3.04 2.46-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3c19.54 0 22 2.46 22 5.5 0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+  background-size: contain;
+  animation: heart-burst 2s ease-out forwards;
+  filter: drop-shadow(0 0 5px #ff66cc);
+}
+
+@keyframes heart-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Confetti Effect */
+.confetti-particle {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 20px;
+  opacity: 0;
+  animation: confetti-fall 3s ease-in-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotateZ(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotateZ(720deg);
+    opacity: 0;
+  }
+}
 
