@@ -25,4 +25,7 @@ initDatabase().catch((err) =>
   console.error('Error initializing database', err)
 );
 
-module.exports = pool;
+// Export the pool’s query method for use in server.js
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+};
