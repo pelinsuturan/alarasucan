@@ -424,15 +424,37 @@ footer {
 
 .section-box {
   flex: 1;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  border-radius: 0; /* Edgy corners */
-  border: 1px solid rgba(255, 102, 204, 0.3);
-  padding: 2.5rem; /* Increased padding for more space */
   color: #e0e0f8;
+  padding: 2.5rem; /* Keeps the extra space */
+  position: relative; /* Important for the corner effect */
   text-align: left;
-  box-shadow: 0px 0px 15px rgba(187, 51, 255, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  /* --- New Corner Effect using layered backgrounds --- */
+  background: 
+    /* The 4 corner brackets */
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) left top,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) left top,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) right top,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) right top,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) left bottom,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) left bottom,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) right bottom,
+    linear-gradient(to right, var(--accent-light), var(--accent-light)) right bottom,
+    
+    /* The main background color */
+    var(--card-glass);
+    
+  background-repeat: no-repeat;
+  background-size: 
+    2px 25px, /* Top-left vertical */
+    25px 2px, /* Top-left horizontal */
+    2px 25px, /* Top-right vertical */
+    25px 2px, /* Top-right horizontal */
+    2px 25px, /* Bottom-left vertical */
+    25px 2px, /* Bottom-left horizontal */
+    2px 25px, /* Bottom-right vertical */
+    25px 2px; /* Bottom-right horizontal */
 }
 
 .section-box:hover {
@@ -500,18 +522,37 @@ footer {
 }
 
 
-/* IMPROVED HEART PARTICLE with new shape */
-.heart-particle {
-  position: absolute;
+/* ===========================
+   NEW BIG HEART EFFECT
+=========================== */
+
+.big-heart-effect {
+  position: fixed;
   top: 50%;
   left: 50%;
-  width: 24px;
-  height: 24px;
-  /* New, more stylized heart shape */
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%); /* Center it */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff66cc'%3E%3Cpath d='M12.846 2.82C13.2356 2.34483 13.8348 2.0625 14.4696 2.03099C15.1044 1.99947 15.7336 2.22153 16.235 2.645C17.65 3.84 17.3 6.33 16.27 7.42L12.001 12L12 11.999L7.73 7.42C6.7 6.33 6.35 3.84 7.765 2.645C8.26644 2.22153 8.89562 1.99947 9.53041 2.03099C10.1652 2.0625 10.7644 2.34483 11.154 2.82L12 3.8L12.846 2.82z M12.001 12L12 22L18.42 14.88C21.43 11.66 22.56 8.35 21.15 6.06C19.67 3.68 16.89 3.2 15.2 4.41L12.001 7.2L12 7.199L8.8 4.41C7.11 3.2 4.33 3.68 2.85 6.06C1.44 8.35 2.57 11.66 5.58 14.88L12.001 22z'/%3E%3C/svg%3E");
   background-size: contain;
-  animation: heart-burst 2s ease-out forwards;
-  filter: drop-shadow(0 0 5px #ff66cc);
+  background-repeat: no-repeat;
+  animation: expand-and-fade 2s ease-out forwards;
+}
+
+@keyframes expand-and-fade {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+    filter: drop-shadow(0 0 30px #ff66cc);
+  }
+  50% {
+    filter: drop-shadow(0 0 50px #ff00ff);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(6);
+    opacity: 0;
+    filter: drop-shadow(0 0 10px #ff00ff);
+  }
 }
 
 

@@ -295,23 +295,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const effectsContainer = document.getElementById('effects-container');
 
   if (heartBtn) {
-      heartBtn.addEventListener('click', () => {
-          for (let i = 0; i < 30; i++) {
-              const particle = document.createElement('div');
-              particle.className = 'heart-particle';
-              
-              const angle = Math.random() * 360;
-              const distance = Math.random() * (window.innerWidth / 2);
-              const tx = Math.cos(angle * Math.PI / 180) * distance + 'px';
-              const ty = Math.sin(angle * Math.PI / 180) * distance + 'px';
-
-              particle.style.setProperty('--tx', tx);
-              particle.style.setProperty('--ty', ty);
-              
-              effectsContainer.appendChild(particle);
-              setTimeout(() => particle.remove(), 2000);
-          }
-      });
+    heartBtn.addEventListener('click', () => {
+        // Create one, single, large heart
+        const bigHeart = document.createElement('div');
+        bigHeart.className = 'big-heart-effect';
+        
+        // Add it to the container and remove it after the animation
+        effectsContainer.appendChild(bigHeart);
+        setTimeout(() => bigHeart.remove(), 2000); // 2-second animation
+    });
   }
 
   if (lightningBtn) {
