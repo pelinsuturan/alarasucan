@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch("/api/entries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }), // ✅ Only send text
+        body: JSON.stringify({ text, alias }),
+
       })
         .then((res) => {
           if (!res.ok) {
@@ -64,7 +65,33 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then((data) => {
           if (data.success) {
-            window.location.href = "/pages/diary.html"; // ✅ Will work
+            const chaosForm = document.getElementById("chaosForm");
+            const notification = document.createElement('div');
+            notification.textContent = 'Chaos saved! 🖤';
+            notification.style.cssText = `
+              position: absolute;
+              bottom: 20px;
+              left: 50%;
+              transform: translateX(-50%);
+              background-color: #bb33ff;
+              color: white;
+              padding: 10px 20px;
+              border-radius: 8px;
+              font-weight: bold;
+              z-index: 100;
+              opacity: 1;
+              transition: opacity 0.5s;
+            `;
+            chaosForm.appendChild(notification);
+        
+            document.getElementById("chaosInput").value = "";
+            document.getElementById("aliasInput").value = "";
+        
+            setTimeout(() => {
+              notification.style.opacity = '0';
+              setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        
           } else {
             alert("Something went wrong saving your chaos.");
           }

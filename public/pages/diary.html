@@ -133,7 +133,9 @@
           // Alias display
           const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
 
-          div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
+
+          div.innerHTML = `<strong>${entry.date}</strong> <span class="math-inline">\{aliasDisplay\}<p\></span>{entry.text}</p>`;
+
           
           container.appendChild(div);
         });
