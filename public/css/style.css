@@ -621,18 +621,23 @@ footer {
     padding-bottom: 150px; 
   }
 
-  /* --- NEW STYLES TO FIX THE 3 BOXES ON MOBILE --- */
+  /* Stacks the 3-section boxes vertically */
   .three-section-row {
-    flex-direction: column; /* Stacks the boxes vertically */
-    align-items: center;    /* Centers the boxes */
-    gap: 1.5rem;            /* Adjusts the vertical space */
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   .section-box {
-    width: 90%; /* Makes each box take up most of the screen width */
+    width: 90%;
   }
-  /* --- END OF NEW STYLES --- */
-
+  
+  /* --- NEW FIX for Music and Video --- */
+  .media-row {
+    flex-direction: column; /* Stacks the Music and Video widgets */
+    align-items: center;    /* Centers them */
+  }
+  /* --- END OF NEW FIX --- */
 
   /* These are the styles for the new mobile-only footer */
   .mobile-footer {
