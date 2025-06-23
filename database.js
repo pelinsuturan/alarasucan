@@ -1,38 +1,28 @@
 // database.js
-const fs = require('fs');
-const path = require('path');
+const { Pool } = require('pg');
 
-const dataPath = path.join(__dirname, 'src', 'data', 'entries.json');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // This is required for Render deployments
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
-function readEntries() {
-  if (!fs.existsSync(dataPath)) {
-    return [];
-  }
-  return JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+// Create the table if it doesn’t already exist
+async function initDatabase() {
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS entries (
+      id SERIAL PRIMARY KEY,
+      text TEXT NOT NULL,
+      date TEXT NOT NULL
+    );
+  `;
+  await pool.query(createTableQuery);
 }
 
-function writeEntries(entries) {
-  fs.writeFileSync(dataPath, JSON.stringify(entries, null, 2));
-}
+initDatabase().catch((err) =>
+  console.error('Error initializing database', err)
+);
 
-module.exports = {
-  getAllEntries: function() {
-    return readEntries();
-  },
-  addEntry: function(entry) {
-    const entries = readEntries();
-    entry.id = entries.length + 1;
-    entries.unshift(entry);
-    writeEntries(entries);
-    return entry;
-  },
-  updateEntry: function(id, updated) {
-    const entries = readEntries();
-    const index = entries.findIndex(entry => entry.id === id);
-    if (index === -1) return null;
-
-    entries[index] = { id, ...updated };
-    writeEntries(entries);
-    return entries[index];
-  }
-};
+module.exports = pool;
