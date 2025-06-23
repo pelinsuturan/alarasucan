@@ -621,6 +621,19 @@ footer {
     padding-bottom: 150px; 
   }
 
+  /* --- NEW STYLES TO FIX THE 3 BOXES ON MOBILE --- */
+  .three-section-row {
+    flex-direction: column; /* Stacks the boxes vertically */
+    align-items: center;    /* Centers the boxes */
+    gap: 1.5rem;            /* Adjusts the vertical space */
+  }
+
+  .section-box {
+    width: 90%; /* Makes each box take up most of the screen width */
+  }
+  /* --- END OF NEW STYLES --- */
+
+
   /* These are the styles for the new mobile-only footer */
   .mobile-footer {
       display: flex;
@@ -740,3 +753,18 @@ footer {
   }
 }
 
+
+
+/* ===========================
+   NEW POSE SVG EFFECT
+=========================== */
+
+.pose-effect {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+  animation: expand-and-fade 3.5s ease-out forwards; /* Changed from 2s to 3.5s */
+}

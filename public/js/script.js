@@ -337,5 +337,25 @@ document.addEventListener('DOMContentLoaded', () => {
           }
       });
   }
+
+  
+  const poseBtn = document.getElementById('pose-effect-btn');
+
+  if (poseBtn) {
+    poseBtn.addEventListener('click', () => {
+        const poseImage = document.createElement('img');
+        
+        poseImage.src = 'assets/icons/poz.svg'; 
+        poseImage.className = 'pose-effect';
+        
+        const randomHue = Math.random() * 360;
+        poseImage.style.filter = `hue-rotate(${randomHue}deg) drop-shadow(0 0 15px #ff99ff)`;
+
+        effectsContainer.appendChild(poseImage);
+        setTimeout(() => poseImage.remove(), 3500); // Changed from 2000 to 3500
+    });
+  }
+
+  
 });
 
