@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  
+
   const poseBtn = document.getElementById('pose-effect-btn');
 
   if (poseBtn) {
@@ -359,3 +359,38 @@ document.addEventListener('DOMContentLoaded', () => {
   
 });
 
+
+// --- FINAL WORKING LOGIC FOR "CHANGE SONG" BUTTON ---
+document.addEventListener('DOMContentLoaded', () => {
+  const changeSongBtn = document.getElementById('change-song-btn');
+  const spotifyPlayer = document.getElementById('spotify-player');
+
+  if (changeSongBtn && spotifyPlayer) {
+      
+      // Your final, corrected list of song IDs
+      const songList = [
+          '3QHONiXGMGU3z68mQInncF',
+          '7ssDqFuoNiVLu2vps3GL3b',
+          '7rvQrL6eEaWdgBfsRubEzc',
+          '5Gv2EoWYl6KeCuyOAEnLbH',
+          '7ARNzfrqpURb3Era5uY7rX',
+          '15TCBcHCuyYMCpEN5r6jF4'
+      ];
+
+      const changeToRandomSong = () => {
+          let randomTrackId;
+
+          // This loop prevents getting the same song twice in a row
+          do {
+              randomTrackId = songList[Math.floor(Math.random() * songList.length)];
+          } while (spotifyPlayer.src.includes(randomTrackId) && songList.length > 1);
+
+          // Build the new URL and update the player
+          const newSrc = `https://open.spotify.com/embed/track/${randomTrackId}?utm_source=generator&theme=0`;
+          spotifyPlayer.src = newSrc;
+      };
+
+      // When the "Change Song" button is clicked, run the function
+      changeSongBtn.addEventListener('click', changeToRandomSong);
+  }
+});

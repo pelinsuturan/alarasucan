@@ -773,3 +773,24 @@ footer {
   transform: translate(-50%, -50%);
   animation: expand-and-fade 3.5s ease-out forwards; /* Changed from 2s to 3.5s */
 }
+
+
+/* ===========================
+   MUSIC WIDGET & BUTTON STYLES
+=========================== */
+
+.music-widget-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+#change-song-btn {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  width: 50%;
+  align-self: center;
+}
+
+
