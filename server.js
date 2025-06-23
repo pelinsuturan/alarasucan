@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./database'); // ✅ Import database.js
-require('dotenv').config();
+require('dotenv').config(); // ✅ Ensure this is called early
 
 const app = express();
 const PORT = process.env.PORT || 3000;
