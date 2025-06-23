@@ -256,25 +256,28 @@ playButtons.forEach(button => {
 
 
 
-// GET
-fetch('/api/entries')
-  .then(res => res.json())
-  .then(data => {
-    // do stuff
+// GET Entries (Placeholder)
+// =======================
+fetch("/api/entries")
+  .then((res) => res.json())
+  .then((data) => {
+    // ✅ Do stuff with returned entries
   });
 
-// POST
+// =======================
+// POST Example (Updated Path)
+// =======================
 fetch("/api/entries", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ text, alias })
-})
-
-// PUT
-fetch('/api/entries/1', {
-  method: 'PUT',
-  headers: {'Content-Type': 'application/json'},
-  body: JSON.stringify({ text: 'updated text' })
+  body: JSON.stringify({ text: "your text here", alias: "your alias" }),
 });
 
-
+// =======================
+// PUT Example
+// =======================
+fetch("/api/entries/1", {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text: "updated text" }),
+});
