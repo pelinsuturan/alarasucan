@@ -22,7 +22,7 @@ app.get('/api/entries', async (req, res) => {
     const result = await db.query('SELECT * FROM entries ORDER BY id DESC');
     res.json(result.rows);
   } catch (error) {
-    console.error(error);
+    console.error('GET /api/entries error:', error);
     res.status(500).send({ error: 'Database error' });
   }
 });
@@ -30,17 +30,21 @@ app.get('/api/entries', async (req, res) => {
 // POST new entry
 app.post('/api/entries', async (req, res) => {
   const { text } = req.body;
-  const date = new Date().toLocaleString();
 
+  if (!text) {
+    return res.status(400).send({ error: 'Text is required' }); // ✅ Guard against empty text
+  }
+
+  const date = new Date().toLocaleString();
   try {
     const result = await db.query(
       'INSERT INTO entries (text, date) VALUES ($1, $2) RETURNING *',
       [text, date]
     );
-    res.json({ success: true, entry: result.rows[0] });
+    res.json({ success: true, entry: result.rows[0] }); // ✅ Will work with your fetch
   } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Database error' });
+    console.error('POST /api/entries error:', error);
+    res.status(500).send({ error: 'Database error' }); // ✅ Clear error
   }
 });
 
@@ -48,20 +52,24 @@ app.post('/api/entries', async (req, res) => {
 app.put('/api/entries/:index', async (req, res) => {
   const id = parseInt(req.params.index, 10);
   const { text } = req.body;
-  const date = new Date().toLocaleString();
 
+  if (!text) {
+    return res.status(400).send({ error: 'Text is required' }); // ✅ Guard against empty text
+  }
+
+  const date = new Date().toLocaleString();
   try {
     const result = await db.query(
       'UPDATE entries SET text = $1, date = $2 WHERE id = $3 RETURNING *',
       [text, date, id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).send({ error: 'Entry not found' });
+      return res.status(404).send({ error: 'Entry not found' }); // ✅ Clarifies error
     }
-    res.json({ success: true, entry: result.rows[0] });
+    res.json({ success: true, entry: result.rows[0] }); // ✅ Will work with fetch
   } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Database error' });
+    console.error('PUT /api/entries error:', error);
+    res.status(500).send({ error: 'Database error' }); // ✅ Clear error
   }
 });
 
