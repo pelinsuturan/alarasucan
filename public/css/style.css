@@ -415,81 +415,103 @@ footer {
 
 
 /* ===========================
-  New 3 Section Render-Inspired Styles
+  ELEVATED 3-SECTION STYLES
 =========================== */
+
 .three-section-row {
-  display: flex;
-  justify-content: space-around;
-  align-items: stretch;
-  gap: 2rem;
-  padding: 3rem 1rem;
-  max-width: 100vw;
-  background: none;
+  gap: 2.5rem; /* Increased gap between boxes */
 }
 
 .section-box {
   flex: 1;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
-  border-radius: 12px;
+  border-radius: 0; /* Edgy corners */
   border: 1px solid rgba(255, 102, 204, 0.3);
-  padding: 1.5rem;
+  padding: 2.5rem; /* Increased padding for more space */
   color: #e0e0f8;
   text-align: left;
   box-shadow: 0px 0px 15px rgba(187, 51, 255, 0.3);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .section-box:hover {
   transform: translateY(-5px);
+  box-shadow: 0px 0px 30px rgba(187, 51, 255, 0.5);
 }
 
 .section-box h3 {
   font-size: 1.25rem;
   color: #ff99ff;
   font-family: 'Orbitron', sans-serif;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex; /* Align icon and text */
+  align-items: center;
+  gap: 0.75rem; /* Space between icon and text */
 }
 
-.section-box p,
-.section-box form {
-  font-size: 1rem;
-  line-height: 1.5;
-}
+/* ===========================
+   ELEVATED EFFECT BUTTONS & PARTICLES
+=========================== */
 
-#askAdminForm {
+.effects-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-#askAdminForm textarea {
-  padding: 0.5rem;
-  font-size: 1rem;
-  background: rgba(255, 102, 204, 0.1);
-  border-radius: 8px;
-  border: 1px solid #ff66cc;
-  color: #fff;
-  margin-bottom: 0.5rem;
-}
-
-#askAdminForm button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background: #ff66cc;
-  border: none;
-  border-radius: 8px;
+.effect-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 102, 204, 0.4);
+  color: #ff99ff;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-#askAdminForm button:hover {
-  background: #bb33ff;
+.effect-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ff66cc;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(255, 102, 204, 0.3);
 }
 
-#worldMap {
-  font-style: italic;
-  color: #aaa;
+.effect-button svg {
+  width: 20px;
+  height: 20px;
+  color: #ff66cc;
+  transition: color 0.3s ease;
+}
+
+.effect-button:hover svg {
+  color: #fff;
+}
+
+.effect-button span {
+  flex-grow: 1;
+  text-align: left;
+}
+
+
+/* IMPROVED HEART PARTICLE with new shape */
+.heart-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  /* New, more stylized heart shape */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff66cc'%3E%3Cpath d='M12.846 2.82C13.2356 2.34483 13.8348 2.0625 14.4696 2.03099C15.1044 1.99947 15.7336 2.22153 16.235 2.645C17.65 3.84 17.3 6.33 16.27 7.42L12.001 12L12 11.999L7.73 7.42C6.7 6.33 6.35 3.84 7.765 2.645C8.26644 2.22153 8.89562 1.99947 9.53041 2.03099C10.1652 2.0625 10.7644 2.34483 11.154 2.82L12 3.8L12.846 2.82z M12.001 12L12 22L18.42 14.88C21.43 11.66 22.56 8.35 21.15 6.06C19.67 3.68 16.89 3.2 15.2 4.41L12.001 7.2L12 7.199L8.8 4.41C7.11 3.2 4.33 3.68 2.85 6.06C1.44 8.35 2.57 11.66 5.58 14.88L12.001 22z'/%3E%3C/svg%3E");
+  background-size: contain;
+  animation: heart-burst 2s ease-out forwards;
+  filter: drop-shadow(0 0 5px #ff66cc);
 }
 
 
