@@ -45,21 +45,26 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       const text = document.getElementById("chaosInput").value.trim();
       const alias = document.getElementById("aliasInput")?.value.trim() || "anon";
-
+  
       if (!text) {
         alert("You can't send empty chaos!");
         return;
       }
-
+  
       fetch("/api/entries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, alias }),
+        body: JSON.stringify({ text }), // ✅ Only send text
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`POST request failed with status ${res.status}`);
+          }
+          return res.json();
+        })
         .then((data) => {
           if (data.success) {
-            window.location.href = "/pages/diary.html";
+            window.location.href = "/pages/diary.html"; // ✅ Will work
           } else {
             alert("Something went wrong saving your chaos.");
           }
@@ -276,12 +281,13 @@ fetch("/api/entries") // ✅ Must match the route in server.js
   });
 
 // =======================
-// POST New Entry
+// POST New Entry (TEST CALL) — REMOVE OR CORRECT
 // =======================
+// ⚡️ Either remove this test call OR fix it:
 fetch("/api/entries", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ text: "your text here", alias: "your alias" }), // ✅ Must match the backend schema
+  body: JSON.stringify({ text: "your text here" }) // ✅ JUST send text
 })
   .then((res) => {
     if (!res.ok) {
