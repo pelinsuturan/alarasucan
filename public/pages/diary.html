@@ -12,11 +12,18 @@
       font-family: 'Outfit', sans-serif;
       margin: 0;
       padding: 2rem;
-      overflow-x: hidden;
+      overflow: auto; /* Allow scrolling if page expands */
+    }
+
+    .container {
+        position: relative;
+        width: 100%;
+        min-height: 100vh; /* Start at full screen height, will expand if needed */
     }
 
     .entry {
-        position: absolute; /* Change from 'relative' to 'absolute' */
+        position: absolute;
+        will-change: transform; /* Optimization for smooth animation */
         margin: 1rem;
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
@@ -25,13 +32,7 @@
         width: 250px;
         box-shadow: 0 0 20px #bb33ff;
         backdrop-filter: blur(10px);
-        animation: fadeIn 0.8s ease, floatAround 12s ease-in-out infinite alternate; /* Slower and smoother animation */
-    }
-
-    .container {
-        position: relative; /* This is correct */
-        width: 100%;
-        height: 100vh; /* Ensure container has a fixed height */
+        transition: transform 0.5s ease-out; /* Smoothly move to new positions */
     }
 
     .back-btn {
@@ -72,23 +73,12 @@
     }
 
     @keyframes floatAround {
-  0% {
-    transform: translateY(0px);
-  }
-  25% {
-    transform: translateY(-5px);
-  }
-  50% {
-    transform: translateY(5px);
-  }
-  75% {
-    transform: translateY(-3px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
+      0% { transform: translate(0px, 0px); }
+      25% { transform: translate(-5px, 5px); }
+      50% { transform: translate(5px, -5px); }
+      75% { transform: translate(-3px, 3px); }
+      100% { transform: translate(0px, 0px); }
+    }
   </style>
 </head>
 <body>
@@ -98,88 +88,111 @@
   </div>
 
   <script>
-    fetch("/api/entries")
-      .then((res) => {
-        if (!res.ok) throw new Error("Network response was not ok");
-        return res.json();
-      })
-      .then((entries) => {
-        const container = document.getElementById("entriesContainer");
-        const status = document.getElementById("statusMessage");
-        status.remove();
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch("/api/entries")
+          .then((res) => {
+            if (!res.ok) throw new Error("Network response was not ok");
+            return res.json();
+          })
+          .then((entries) => {
+            const container = document.getElementById("entriesContainer");
+            const status = document.getElementById("statusMessage");
+            if(status) status.remove();
 
-        if (entries.length === 0) {
-          const msg = document.createElement("p");
-          msg.className = "message";
-          msg.textContent = "No chaos entries yet. Be the first.";
-          container.appendChild(msg);
-          return;
-        }
-
-        // --- NEW, MORE ROBUST LOGIC ---
-
-        // 1. Calculate required height to avoid overlap
-        const entryWidth = 282; 
-        const entryHeight = 170;
-        const numEntries = entries.length;
-        const containerWidth = container.clientWidth;
-        
-        // Estimate the total area needed and calculate the required height
-        const areaPerEntry = (entryWidth * entryHeight) * 2; // Add 2x buffer for random spacing
-        const requiredHeight = (numEntries * areaPerEntry) / containerWidth;
-        
-        // Set the container height to be at least the viewport height, or taller if needed
-        container.style.height = `${Math.max(window.innerHeight, requiredHeight)}px`;
-
-
-        // 2. Place entries randomly within the new, larger container
-        const placedRects = [];
-
-        function isOverlapping(rect) {
-          for (const existingRect of placedRects) {
-            if (
-              rect.left < existingRect.right &&
-              rect.right > existingRect.left &&
-              rect.top < existingRect.bottom &&
-              rect.bottom > existingRect.top
-            ) {
-              return true;
+            if (entries.length === 0) {
+              const msg = document.createElement("p");
+              msg.className = "message";
+              msg.textContent = "No chaos entries yet. Be the first.";
+              container.appendChild(msg);
+              return;
             }
-          }
-          return false;
-        }
 
-        entries.forEach((entry) => {
-          const div = document.createElement("div");
-          div.className = "entry";
-          
-          const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
-          div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
-          
-          let newRect;
-          let attempts = 0;
-          const maxAttempts = 200; // Increased attempts
+            // --- NEW PHYSICS-BASED PLACEMENT LOGIC ---
+            const entryElements = [];
+            const entryData = [];
+            const radius = 150; // Collision radius for each entry
 
-          // Try to find a non-overlapping position
-          do {
-            const top = Math.random() * (container.clientHeight - entryHeight);
-            const left = Math.random() * (container.clientWidth - entryWidth);
-            newRect = { top, left, right: left + entryWidth, bottom: top + entryHeight };
-            attempts++;
-          } while (isOverlapping(newRect) && attempts < maxAttempts);
+            // 1. Create all the entry divs and data objects
+            entries.forEach((entry, i) => {
+              const div = document.createElement("div");
+              div.className = "entry";
+              
+              const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
+              div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
+              container.appendChild(div);
+              entryElements.push(div);
 
-          div.style.top = `${newRect.top}px`;
-          div.style.left = `${newRect.left}px`;
-          
-          placedRects.push(newRect);
-          container.appendChild(div);
-        });
-      })
-      .catch((err) => {
-        console.error("Failed to load entries:", err);
-        const container = document.getElementById("entriesContainer");
-        container.innerHTML = `<p class="message">Failed to load diary entries. Server might be down.</p>`;
-      });
+              // Give each entry a random starting position
+              entryData.push({
+                x: Math.random() * container.clientWidth,
+                y: Math.random() * 500, // Start them near the top
+                vx: 0, // velocity x
+                vy: 0  // velocity y
+              });
+            });
+
+            // 2. The Simulation Function
+            function runSimulation() {
+              for (let i = 0; i < entryData.length; i++) {
+                const entryA = entryData[i];
+
+                // Repel from other entries
+                for (let j = i + 1; j < entryData.length; j++) {
+                  const entryB = entryData[j];
+                  const dx = entryB.x - entryA.x;
+                  const dy = entryB.y - entryA.y;
+                  const distance = Math.sqrt(dx * dx + dy * dy);
+                  const minDistance = radius * 2;
+
+                  if (distance < minDistance) {
+                    const angle = Math.atan2(dy, dx);
+                    const tx = entryA.x + Math.cos(angle) * minDistance;
+                    const ty = entryA.y + Math.sin(angle) * minDistance;
+                    const ax = (tx - entryB.x) * 0.02;
+                    const ay = (ty - entryB.y) * 0.02;
+                    entryA.vx -= ax;
+                    entryA.vy -= ay;
+                    entryB.vx += ax;
+                    entryB.vy += ay;
+                  }
+                }
+              }
+
+              let lowestPoint = 0;
+              // 3. Update positions based on velocity
+              for (let i = 0; i < entryData.length; i++) {
+                const entry = entryData[i];
+                entry.x += entry.vx;
+                entry.y += entry.vy;
+
+                // Dampen velocity to eventually settle
+                entry.vx *= 0.95;
+                entry.vy *= 0.95;
+
+                // Update the DOM element
+                entryElements[i].style.transform = `translate(${entry.x}px, ${entry.y}px)`;
+                
+                // Track the lowest point to resize container
+                if (entry.y > lowestPoint) {
+                    lowestPoint = entry.y;
+                }
+              }
+              
+              // 4. Expand the container if necessary
+              container.style.height = `${lowestPoint + 250}px`;
+            }
+
+            // Run the simulation multiple times to let things settle
+            for (let i = 0; i < 150; i++) {
+                runSimulation();
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to load entries:", err);
+            const container = document.getElementById("entriesContainer");
+            container.innerHTML = `<p class="message">Failed to load diary entries. Server might be down.</p>`;
+          });
+    });
   </script>
 </body>
 </html>
