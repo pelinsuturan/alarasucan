@@ -12,18 +12,16 @@
       font-family: 'Outfit', sans-serif;
       margin: 0;
       padding: 2rem;
-      overflow: auto; /* Allow scrolling if page expands */
+      overflow-x: hidden;
     }
 
     .container {
         position: relative;
         width: 100%;
-        min-height: 100vh; /* Start at full screen height */
     }
 
     .entry {
         position: absolute;
-        will-change: transform;
         margin: 1rem;
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
@@ -32,7 +30,7 @@
         width: 250px;
         box-shadow: 0 0 20px #bb33ff;
         backdrop-filter: blur(10px);
-        /* The final animation combines the placement (from JS) and floating (from CSS) */
+        /* Re-adding the slow floating animation */
         animation: floatAround 25s ease-in-out infinite alternate;
     }
 
@@ -55,10 +53,6 @@
       font-style: italic;
       font-weight: bold;
       color: #ff99ff;
-      text-shadow: 0px 0px 8px #ff66ff, 0px 0px 12px #ff66ff;
-      padding: 0 0.25rem;
-      display: inline-block;
-      margin-left: 0.5rem;
     }
 
     .message {
@@ -67,12 +61,11 @@
       color: #aaa;
     }
 
-    /* Keyframes for the slow floating animation */
     @keyframes floatAround {
       0% { transform: translate(0px, 0px); }
-      25% { transform: translate(-8px, 8px); }
-      50% { transform: translate(8px, -8px); }
-      75% { transform: translate(-5px, 5px); }
+      25% { transform: translate(-6px, 6px); }
+      50% { transform: translate(6px, -6px); }
+      75% { transform: translate(-4px, 4px); }
       100% { transform: translate(0px, 0px); }
     }
   </style>
@@ -103,11 +96,16 @@
               return;
             }
 
-            // --- FINAL PHYSICS PLACEMENT SCRIPT ---
+            // --- NEW, SIMPLE, AND RELIABLE GRID PLACEMENT ---
             
-            const entryElements = [];
-            const entryData = [];
-            const radius = 160; // Increased radius to prevent any overlap
+            const containerWidth = container.clientWidth;
+            const entryWidth = 250; // width of .entry
+            const entryMargin = 16; // 1rem margin
+            const totalEntryWidth = entryWidth + (entryMargin * 2);
+            
+            let currentX = entryMargin;
+            let currentY = entryMargin;
+            let rowMaxHeight = 0;
 
             entries.forEach((entry) => {
               const div = document.createElement("div");
@@ -115,64 +113,32 @@
               
               const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
               div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
-              container.appendChild(div);
-              entryElements.push(div);
+              
+              // If the next entry won't fit, start a new row
+              if (currentX + totalEntryWidth > containerWidth) {
+                currentX = entryMargin;
+                currentY += rowMaxHeight;
+                rowMaxHeight = 0;
+              }
 
-              entryData.push({
-                x: Math.random() * (container.clientWidth - 250),
-                y: Math.random() * 300,
-                vx: 0, vy: 0
-              });
+              // Position the entry
+              div.style.left = `${currentX}px`;
+              div.style.top = `${currentY}px`;
+              
+              container.appendChild(div);
+
+              // Update the position for the next entry
+              currentX += totalEntryWidth;
+              // Dynamically get the actual height of the element
+              const currentEntryHeight = div.offsetHeight + (entryMargin * 2);
+              if (currentEntryHeight > rowMaxHeight) {
+                rowMaxHeight = currentEntryHeight;
+              }
             });
 
-            function runSimulation() {
-              for (let i = 0; i < entryData.length; i++) {
-                const entryA = entryData[i];
-                for (let j = i + 1; j < entryData.length; j++) {
-                  const entryB = entryData[j];
-                  const dx = entryB.x - entryA.x;
-                  const dy = entryB.y - entryA.y;
-                  const distance = Math.sqrt(dx * dx + dy * dy);
-                  const minDistance = radius * 2;
+            // Set the final height of the container to fit all rows
+            container.style.height = `${currentY + rowMaxHeight}px`;
 
-                  if (distance < minDistance) {
-                    const angle = Math.atan2(dy, dx);
-                    const tx = entryA.x + Math.cos(angle) * minDistance;
-                    const ty = entryA.y + Math.sin(angle) * minDistance;
-                    const ax = (tx - entryB.x) * 0.02;
-                    const ay = (ty - entryB.y) * 0.02;
-                    entryA.vx -= ax;
-                    entryA.vy -= ay;
-                    entryB.vx += ax;
-                    entryB.vy += ay;
-                  }
-                }
-              }
-
-              let lowestPoint = 0;
-              for (let i = 0; i < entryData.length; i++) {
-                const entry = entryData[i];
-                entry.x += entry.vx;
-                entry.y += entry.vy;
-                entry.vx *= 0.9; // Apply friction
-                entry.vy *= 0.9;
-
-                // ** THE FIX IS HERE **
-                // We set the final top/left position from the simulation.
-                // The CSS animation will handle the floating from this position.
-                entryElements[i].style.left = `${entry.x}px`;
-                entryElements[i].style.top = `${entry.y}px`;
-
-                if (entry.y > lowestPoint) {
-                    lowestPoint = entry.y;
-                }
-              }
-              container.style.height = `${lowestPoint + 200}px`; // Add buffer at bottom
-            }
-
-            for (let i = 0; i < 200; i++) { // Run more iterations for a stable layout
-                runSimulation();
-            }
           })
           .catch((err) => {
             console.error("Failed to load entries:", err);
