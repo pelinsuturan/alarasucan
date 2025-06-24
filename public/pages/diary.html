@@ -18,12 +18,12 @@
     .container {
         position: relative;
         width: 100%;
-        min-height: 100vh; /* Start at full screen height, will expand if needed */
+        min-height: 100vh; /* Start at full screen height */
     }
 
     .entry {
         position: absolute;
-        will-change: transform; /* Optimization for smooth animation */
+        will-change: transform;
         margin: 1rem;
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
@@ -32,7 +32,8 @@
         width: 250px;
         box-shadow: 0 0 20px #bb33ff;
         backdrop-filter: blur(10px);
-        transition: transform 0.5s ease-out; /* Smoothly move to new positions */
+        /* The final animation combines the placement (from JS) and floating (from CSS) */
+        animation: floatAround 25s ease-in-out infinite alternate;
     }
 
     .back-btn {
@@ -66,17 +67,12 @@
       color: #aaa;
     }
 
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
+    /* Keyframes for the slow floating animation */
     @keyframes floatAround {
       0% { transform: translate(0px, 0px); }
-      25% { transform: translate(-5px, 5px); }
-      50% { transform: translate(5px, -5px); }
-      75% { transform: translate(-3px, 3px); }
+      25% { transform: translate(-8px, 8px); }
+      50% { transform: translate(8px, -8px); }
+      75% { transform: translate(-5px, 5px); }
       100% { transform: translate(0px, 0px); }
     }
   </style>
@@ -107,13 +103,13 @@
               return;
             }
 
-            // --- NEW PHYSICS-BASED PLACEMENT LOGIC ---
+            // --- FINAL PHYSICS PLACEMENT SCRIPT ---
+            
             const entryElements = [];
             const entryData = [];
-            const radius = 150; // Collision radius for each entry
+            const radius = 160; // Increased radius to prevent any overlap
 
-            // 1. Create all the entry divs and data objects
-            entries.forEach((entry, i) => {
+            entries.forEach((entry) => {
               const div = document.createElement("div");
               div.className = "entry";
               
@@ -122,21 +118,16 @@
               container.appendChild(div);
               entryElements.push(div);
 
-              // Give each entry a random starting position
               entryData.push({
-                x: Math.random() * container.clientWidth,
-                y: Math.random() * 500, // Start them near the top
-                vx: 0, // velocity x
-                vy: 0  // velocity y
+                x: Math.random() * (container.clientWidth - 250),
+                y: Math.random() * 300,
+                vx: 0, vy: 0
               });
             });
 
-            // 2. The Simulation Function
             function runSimulation() {
               for (let i = 0; i < entryData.length; i++) {
                 const entryA = entryData[i];
-
-                // Repel from other entries
                 for (let j = i + 1; j < entryData.length; j++) {
                   const entryB = entryData[j];
                   const dx = entryB.x - entryA.x;
@@ -159,31 +150,27 @@
               }
 
               let lowestPoint = 0;
-              // 3. Update positions based on velocity
               for (let i = 0; i < entryData.length; i++) {
                 const entry = entryData[i];
                 entry.x += entry.vx;
                 entry.y += entry.vy;
+                entry.vx *= 0.9; // Apply friction
+                entry.vy *= 0.9;
 
-                // Dampen velocity to eventually settle
-                entry.vx *= 0.95;
-                entry.vy *= 0.95;
+                // ** THE FIX IS HERE **
+                // We set the final top/left position from the simulation.
+                // The CSS animation will handle the floating from this position.
+                entryElements[i].style.left = `${entry.x}px`;
+                entryElements[i].style.top = `${entry.y}px`;
 
-                // Update the DOM element
-                entryElements[i].style.transform = `translate(${entry.x}px, ${entry.y}px)`;
-                
-                // Track the lowest point to resize container
                 if (entry.y > lowestPoint) {
                     lowestPoint = entry.y;
                 }
               }
-              
-              // 4. Expand the container if necessary
-              container.style.height = `${lowestPoint + 250}px`;
+              container.style.height = `${lowestPoint + 200}px`; // Add buffer at bottom
             }
 
-            // Run the simulation multiple times to let things settle
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 200; i++) { // Run more iterations for a stable layout
                 runSimulation();
             }
           })
