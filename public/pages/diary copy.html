@@ -116,32 +116,17 @@
           return;
         }
 
-        // --- NEW, MORE ROBUST LOGIC ---
+        const placedEntries = [];
+        const entryWidth = 282; // width (250) + padding (16*2) + margin (16)
+        const entryHeight = 150; // Approximate height, adjust if needed
 
-        // 1. Calculate required height to avoid overlap
-        const entryWidth = 282; 
-        const entryHeight = 170;
-        const numEntries = entries.length;
-        const containerWidth = container.clientWidth;
-        
-        // Estimate the total area needed and calculate the required height
-        const areaPerEntry = (entryWidth * entryHeight) * 2; // Add 2x buffer for random spacing
-        const requiredHeight = (numEntries * areaPerEntry) / containerWidth;
-        
-        // Set the container height to be at least the viewport height, or taller if needed
-        container.style.height = `${Math.max(window.innerHeight, requiredHeight)}px`;
-
-
-        // 2. Place entries randomly within the new, larger container
-        const placedRects = [];
-
-        function isOverlapping(rect) {
-          for (const existingRect of placedRects) {
+        function isOverlapping(newEntry) {
+          for (const placed of placedEntries) {
             if (
-              rect.left < existingRect.right &&
-              rect.right > existingRect.left &&
-              rect.top < existingRect.bottom &&
-              rect.bottom > existingRect.top
+              newEntry.left < placed.left + placed.width &&
+              newEntry.left + newEntry.width > placed.left &&
+              newEntry.top < placed.top + placed.height &&
+              newEntry.top + newEntry.height > placed.top
             ) {
               return true;
             }
@@ -156,22 +141,19 @@
           const aliasDisplay = entry.alias ? `<span class="alias">(${entry.alias})</span>` : '';
           div.innerHTML = `<strong>${entry.date}</strong> ${aliasDisplay}<p>${entry.text}</p>`;
           
-          let newRect;
+          let position;
           let attempts = 0;
-          const maxAttempts = 200; // Increased attempts
-
-          // Try to find a non-overlapping position
           do {
             const top = Math.random() * (container.clientHeight - entryHeight);
             const left = Math.random() * (container.clientWidth - entryWidth);
-            newRect = { top, left, right: left + entryWidth, bottom: top + entryHeight };
+            position = { top, left, width: entryWidth, height: entryHeight };
             attempts++;
-          } while (isOverlapping(newRect) && attempts < maxAttempts);
+          } while (isOverlapping(position) && attempts < 100);
 
-          div.style.top = `${newRect.top}px`;
-          div.style.left = `${newRect.left}px`;
+          div.style.top = `${position.top}px`;
+          div.style.left = `${position.left}px`;
           
-          placedRects.push(newRect);
+          placedEntries.push(position);
           container.appendChild(div);
         });
       })
