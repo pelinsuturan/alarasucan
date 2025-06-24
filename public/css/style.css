@@ -97,6 +97,12 @@ main {
   transition: 0.3s ease;
   position: relative;
 }
+.widget-subtitle {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-top: -0.5rem; /* Reduced negative margin for less proximity */
+  margin-bottom: 1.5rem;
+}
 .glass-card:hover {
   box-shadow: 0 0 24px rgba(255, 0, 255, 0.3), 0 0 42px rgba(140, 0, 255, 0.1) inset;
   transform: translateY(-2px);
@@ -104,6 +110,7 @@ main {
 .glow-card {
   box-shadow: 0 0 15px rgba(255, 102, 204, 0.3), 0 0 25px rgba(255, 102, 204, 0.15) inset;
 }
+
 
 /* BUTTONS */
 button {
