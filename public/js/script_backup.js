@@ -362,7 +362,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// --- FINAL, CORRECTED, AND WORKING LOGIC FOR "CHANGE SONG" BUTTON ---
+// --- FINAL, CORRECTED, AND WORKING LOGIC FOR MUSIC BUTTONS ---
+// --- FINAL WORKING LOGIC WITH COMBINED SONG LIST ---
 document.addEventListener('DOMContentLoaded', () => {
   const changeSongBtn = document.getElementById('change-song-btn');
   const spotifyPlayer = document.getElementById('spotify-player');
@@ -370,8 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ensure the button and player exist on the page
   if (changeSongBtn && spotifyPlayer) {
 
-      // Your final, complete list of song IDs.
-      const masterSongList = [
+      // Your complete, combined list of 10 song IDs.
+      const songList = [
           '3QHONiXGMGU3z68mQInncF',
           '7ssDqFuoNiVLu2vps3GL3b',
           '7rvQrL6eEaWdgBfsRubEzc',
@@ -381,49 +382,25 @@ document.addEventListener('DOMContentLoaded', () => {
           '150wTRpIMh1v4s6919wsSj',
           '3fDIlN87QGT3nEPvILhwYP',
           '520iXlo3rd0yJvppBa4xyx',
-          
+          '6o86bV7TAt5x4exc2qLDqC'
       ];
+      
+      const changeToRandomSong = () => {
+          let randomTrackId;
 
-      let shuffledQueue = [];
-      let currentIndex = -1;
+          // This loop prevents getting the same song twice in a row
+          do {
+              randomTrackId = songList[Math.floor(Math.random() * songList.length)];
+          } while (spotifyPlayer.src.includes(randomTrackId) && songList.length > 1);
 
-      // This function shuffles the master list into a new random order.
-      function shufflePlaylist() {
-          // Create a copy and shuffle it
-          shuffledQueue = [...masterSongList];
-          for (let i = shuffledQueue.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [shuffledQueue[i], shuffledQueue[j]] = [shuffledQueue[j], shuffledQueue[i]];
-          }
-          currentIndex = -1; // Reset for the new shuffled queue
-          console.log("Playlist shuffled. New order created.");
-      }
+          // This correctly builds the URL for a track and inserts the ID.
+          const newSrc = `https://open.spotify.com/embed/track/${randomTrackId}?utm_source=generator&theme=0&autoplay=1`;
 
-      // This function plays the next song in the shuffled queue.
-      const playNextInQueue = () => {
-          // If we've reached the end of the list, shuffle it again!
-          if (currentIndex >= shuffledQueue.length - 1) {
-              shufflePlaylist();
-          }
-
-          currentIndex++;
-          const nextTrackId = shuffledQueue[currentIndex];
-          
-          // ==========================================================
-          //  THIS IS THE CORRECTED LINE THAT FIXES THE ERROR
-          //  It now correctly uses `${...}` to build the URL.
-          // ==========================================================
-          const newSrc = `https://open.spotify.com/embed/track/${nextTrackId}?utm_source=generator&theme=0&autoplay=1`;
-
-          // Update the music player with the new, valid URL
+          // Update the music player with the new, correct URL
           spotifyPlayer.src = newSrc;
       };
 
-      // --- Initial Setup ---
-      shufflePlaylist(); // Create the first random order when the page loads.
-
-      // --- Event Listener ---
-      // When the "Change Song" button is clicked, play the next song in the queue.
-      changeSongBtn.addEventListener('click', playNextInQueue);
+      // Add the click listener to the button
+      changeSongBtn.addEventListener('click', changeToRandomSong);
   }
 });
