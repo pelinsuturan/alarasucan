@@ -362,8 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// --- FINAL, CORRECTED, AND WORKING LOGIC FOR MUSIC BUTTONS ---
-// --- FINAL WORKING LOGIC WITH COMBINED SONG LIST ---
+// --- FINAL, CORRECTED, AND WORKING LOGIC FOR "CHANGE SONG" BUTTON ---
 document.addEventListener('DOMContentLoaded', () => {
   const changeSongBtn = document.getElementById('change-song-btn');
   const spotifyPlayer = document.getElementById('spotify-player');
@@ -371,36 +370,155 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ensure the button and player exist on the page
   if (changeSongBtn && spotifyPlayer) {
 
-      // Your complete, combined list of 10 song IDs.
-      const songList = [
+      // Your final, complete list of song IDs.
+      const masterSongList = [
           '3QHONiXGMGU3z68mQInncF',
           '7ssDqFuoNiVLu2vps3GL3b',
           '7rvQrL6eEaWdgBfsRubEzc',
           '5Gv2EoWYl6KeCuyOAEnLbH',
           '7ARNzfrqpURb3Era5uY7rX',
+          '2YeKQ7zSBbalFl5K0EpEgH?',
+          '41WHSazooiRVZFJuIwwLKH?',
+          '1rJRIo0y2awuZfIWYKz2Uz?',
           '15TCBcHCuyYMCpEN5r6jF4',
+          '24CoUR3GwPXeWJzGizLzhR?',
           '150wTRpIMh1v4s6919wsSj',
           '3fDIlN87QGT3nEPvILhwYP',
+          '1Tc5rWp4d2lNAF50T5nybD?',
+          '5ZwYy9pN328mMzYONXLRDn?',
+          '5jf9Zj1ebsD5gerVZzZ0X4?',
+          '47430dfRtERI1JRAF5v6W5?',
+          '4BFteJu5Hv7XStDXghJbQ7?',
+          '6r2zoEGcEOLGx4qIWvExFN?',
           '520iXlo3rd0yJvppBa4xyx',
-          '6o86bV7TAt5x4exc2qLDqC'
+          
       ];
-      
-      const changeToRandomSong = () => {
-          let randomTrackId;
 
-          // This loop prevents getting the same song twice in a row
-          do {
-              randomTrackId = songList[Math.floor(Math.random() * songList.length)];
-          } while (spotifyPlayer.src.includes(randomTrackId) && songList.length > 1);
+      let shuffledQueue = [];
+      let currentIndex = -1;
 
-          // This correctly builds the URL for a track and inserts the ID.
-          const newSrc = `https://open.spotify.com/embed/track/${randomTrackId}?utm_source=generator&theme=0&autoplay=1`;
+      // This function shuffles the master list into a new random order.
+      function shufflePlaylist() {
+          // Create a copy and shuffle it
+          shuffledQueue = [...masterSongList];
+          for (let i = shuffledQueue.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [shuffledQueue[i], shuffledQueue[j]] = [shuffledQueue[j], shuffledQueue[i]];
+          }
+          currentIndex = -1; // Reset for the new shuffled queue
+          console.log("Playlist shuffled. New order created.");
+      }
 
-          // Update the music player with the new, correct URL
+      // This function plays the next song in the shuffled queue.
+      const playNextInQueue = () => {
+          // If we've reached the end of the list, shuffle it again!
+          if (currentIndex >= shuffledQueue.length - 1) {
+              shufflePlaylist();
+          }
+
+          currentIndex++;
+          const nextTrackId = shuffledQueue[currentIndex];
+          
+          // ==========================================================
+          //  THIS IS THE CORRECTED LINE THAT FIXES THE ERROR
+          //  It now correctly uses `${...}` to build the URL.
+          // ==========================================================
+          const newSrc = `https://open.spotify.com/embed/track/${nextTrackId}?utm_source=generator&theme=0&autoplay=1`;
+
+          // Update the music player with the new, valid URL
           spotifyPlayer.src = newSrc;
       };
 
-      // Add the click listener to the button
-      changeSongBtn.addEventListener('click', changeToRandomSong);
+      // --- Initial Setup ---
+      shufflePlaylist(); // Create the first random order when the page loads.
+
+      // --- Event Listener ---
+      // When the "Change Song" button is clicked, play the next song in the queue.
+      changeSongBtn.addEventListener('click', playNextInQueue);
   }
 });
+
+
+
+
+
+
+// ===========================
+// Slideshow Logic
+// ===========================
+const slideshowImage = document.getElementById("slideshowImage");
+const nextImageBtn = document.getElementById("nextImageBtn");
+
+if (slideshowImage && nextImageBtn) {
+  const imageCount = 13; // Total number of teyze images
+  // Create an array of image filenames like "teyze1.png", "teyze2.png", etc.
+  // This now points to your 'teyze_pics' folder
+  const slideshowImages = Array.from({ length: imageCount }, (_, i) => `assets/teyze_pics/teyze${i + 1}.png`);
+
+  let availableImages = [];
+  let viewedImages = [];
+
+  function getNextImage() {
+    // If we have shown all the images, restart the cycle
+    if (availableImages.length === 0) {
+      availableImages = [...slideshowImages];
+      viewedImages = []; // Clear the viewed list
+      console.log("All teyzes seen! Starting over.");
+    }
+
+    // Pick a random image from the ones we haven't shown yet
+    const randomIndex = Math.floor(Math.random() * availableImages.length);
+    const randomImage = availableImages.splice(randomIndex, 1)[0];
+
+    // Add the image to our 'viewed' list so we don't repeat it
+    viewedImages.push(randomImage);
+
+    return randomImage;
+  }
+
+  // --- Initialize the slideshow ---
+  // Set a random image when the page first loads
+  slideshowImage.src = getNextImage();
+
+  // --- Add the button functionality ---
+  // When the button is clicked, show the next random, unseen image
+  nextImageBtn.addEventListener("click", () => {
+    slideshowImage.src = getNextImage();
+  });
+}
+
+
+// ===========================
+// ===========================
+// ===========================
+// Funny & Artistic Floating Icons Logic (V2)
+// ===========================
+const animationContainer = document.getElementById("hearts-animation-container");
+
+if (animationContainer) {
+  // 1. UPDATED: A wider and funnier selection of emojis to match the vibe
+  const icons = ['😂', '💀', '💅', '🤡', '🔥', '👀', '🫠', '✨', '💅', '☠️', '🥂'];
+
+  // 2. We increased the number of icons to 25 for a fuller background
+  const numberOfIcons = 25; 
+
+  for (let i = 0; i < numberOfIcons; i++) {
+    const icon = document.createElement('div');
+    icon.classList.add('floating-icon');
+    
+    icon.innerText = icons[Math.floor(Math.random() * icons.length)];
+    
+    // 3. THIS IS THE FIX: This logic ensures icons are spread evenly
+    // across the ENTIRE container, from edge to edge.
+    icon.style.top = Math.random() * 100 + '%';
+    icon.style.left = Math.random() * 100 + '%';
+    
+    icon.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    icon.style.animationDelay = Math.random() * 8 + 's';
+    
+    animationContainer.appendChild(icon);
+  }
+}
+
+
+

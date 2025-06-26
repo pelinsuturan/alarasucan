@@ -437,3 +437,88 @@ document.addEventListener('DOMContentLoaded', () => {
       changeSongBtn.addEventListener('click', playNextInQueue);
   }
 });
+
+
+
+
+
+
+// ===========================
+// Slideshow Logic
+// ===========================
+const slideshowImage = document.getElementById("slideshowImage");
+const nextImageBtn = document.getElementById("nextImageBtn");
+
+if (slideshowImage && nextImageBtn) {
+  const imageCount = 13; // Total number of teyze images
+  // Create an array of image filenames like "teyze1.png", "teyze2.png", etc.
+  // This now points to your 'teyze_pics' folder
+  const slideshowImages = Array.from({ length: imageCount }, (_, i) => `assets/teyze_pics/teyze${i + 1}.png`);
+
+  let availableImages = [];
+  let viewedImages = [];
+
+  function getNextImage() {
+    // If we have shown all the images, restart the cycle
+    if (availableImages.length === 0) {
+      availableImages = [...slideshowImages];
+      viewedImages = []; // Clear the viewed list
+      console.log("All teyzes seen! Starting over.");
+    }
+
+    // Pick a random image from the ones we haven't shown yet
+    const randomIndex = Math.floor(Math.random() * availableImages.length);
+    const randomImage = availableImages.splice(randomIndex, 1)[0];
+
+    // Add the image to our 'viewed' list so we don't repeat it
+    viewedImages.push(randomImage);
+
+    return randomImage;
+  }
+
+  // --- Initialize the slideshow ---
+  // Set a random image when the page first loads
+  slideshowImage.src = getNextImage();
+
+  // --- Add the button functionality ---
+  // When the button is clicked, show the next random, unseen image
+  nextImageBtn.addEventListener("click", () => {
+    slideshowImage.src = getNextImage();
+  });
+}
+
+
+// ===========================
+// ===========================
+// Harmonious Floating Icons Logic (V3)
+// ===========================
+const animationPanels = document.querySelectorAll(".animation-panel");
+
+// Check if the animation panels exist on the page
+if (animationPanels.length > 0) {
+  const icons = ['😂', '💀', '💅', '🤡', '🔥', '👀', '🫠', '✨', '🥂'];
+  const numberOfIcons = 30; // Increased for two panels
+
+  // Function to create a single icon and place it in a container
+  function createFloatingIcon(container) {
+    const icon = document.createElement('div');
+    icon.classList.add('floating-icon');
+    
+    icon.innerText = icons[Math.floor(Math.random() * icons.length)];
+    icon.style.top = Math.random() * 100 + '%';
+    icon.style.left = Math.random() * 100 + '%';
+    icon.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    icon.style.animationDelay = Math.random() * 8 + 's';
+    
+    container.appendChild(icon);
+  }
+
+  // Loop and create icons, distributing them between the available panels
+  for (let i = 0; i < numberOfIcons; i++) {
+    // Randomly pick one of the panels (left or right) for each icon
+    const targetPanel = animationPanels[Math.floor(Math.random() * animationPanels.length)];
+    createFloatingIcon(targetPanel);
+  }
+}
+
+
