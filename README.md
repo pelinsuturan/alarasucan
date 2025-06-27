@@ -1,7 +1,8 @@
 # Alarasucan Website
 
 This repository contains the source code for the official Alarasucan website, a dynamic and interactive web application built with Node.js, Express, and PostgreSQL.
-Go to website : alarasucan.com
+
+**Go to website:** [https://alarasucan.com](https://alarasucan.com)
 
 ---
 
