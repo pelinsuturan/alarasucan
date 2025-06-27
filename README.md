@@ -71,8 +71,7 @@ To run this project on your local machine, follow these steps.
 │   │   └── style.css        # Main stylesheet
 │   └── js/
 │       └── script.js        # Frontend JavaScript logic
-├── views/
-│   └── index.html           # Main HTML file
+├── index.html               # Main HTML file
 ├── server.js                # The Express.js server application
 ├── database.js              # Database connection and query logic (example name)
 ├── .gitignore               # Files to be ignored by Git
