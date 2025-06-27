@@ -451,7 +451,7 @@ const slideshowImage = document.getElementById("slideshowImage");
 const nextImageBtn = document.getElementById("nextImageBtn");
 
 if (slideshowImage && nextImageBtn) {
-  const imageCount = 13; // Total number of teyze images
+  const imageCount = 22; // Total number of teyze images
   // Create an array of image filenames like "teyze1.png", "teyze2.png", etc.
   // This now points to your 'teyze_pics' folder
   const slideshowImages = Array.from({ length: imageCount }, (_, i) => `assets/teyze_pics/teyze${i + 1}.png`);
