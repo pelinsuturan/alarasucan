@@ -1,49 +1,60 @@
-Alarasucan 
-This repository contains the source code for the official Alarasucan website, a dynamic and interactive web application built with Node.js and Express. 
+# Alarasucan Website
 
-//Tech Stack
-Category	Technology / Tool
-Frontend	HTML5, CSS3, JavaScript (ES6+)
-Backend	Node.js, Express.js
-Styling	Custom CSS Animations, Google Fonts, Glassmorphism UI
-Data Storage	Local JSON File (data/entries.json)
-Deployment	Render (or any Node.js host)
+This repository contains the source code for the official Alarasucan website, a dynamic and interactive web application built with Node.js and Express.
 
-//Export to Sheets
-Getting Started
+---
+
+## 🛠️ Tech Stack
+
+| Category       | Technology / Tool                                     |
+| :------------- | :---------------------------------------------------- |
+| **Frontend** | HTML5, CSS3, JavaScript (ES6+)                        |
+| **Backend** | Node.js, Express.js                                   |
+| **Styling** | Custom CSS Animations, Google Fonts, Glassmorphism UI |
+| **Data Storage** | Local JSON File (`data/entries.json`)               |
+| **Deployment** | Render (or any Node.js host)                        |
+
+---
+
+## 🚀 Getting Started
+
 To run this project on your local machine, follow these steps.
 
-//Prerequisites
-Node.js (v14 or newer)
-npm (comes with Node.js)
+### Prerequisites
 
-//Installation & Setup
-Clone the repository:
+* Node.js (v14 or newer)
+* npm (comes with Node.js)
 
-Bash
+### Installation & Setup
 
-git clone https://github.com/alarasucan/your-repo-name.git
-cd your-repo-name
-Install dependencies:
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/alarasucan/your-repo-name.git](https://github.com/alarasucan/your-repo-name.git)
+    cd your-repo-name
+    ```
 
-Bash
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-npm install
-Create an environment file:
-Create a file named .env in the root of the project and add the following variable:
+3.  **Create an environment file:**
+    Create a file named `.env` in the root of the project and add the following variable:
+    ```
+    PORT=3000
+    ```
 
-PORT=3000
-Run the application:
+4.  **Run the application:**
+    ```bash
+    npm start
+    ```
+    The server will start, and you can view the application at `http://localhost:3000`.
 
-Bash
+---
 
-npm start
-The server will start, and you can view the application at http://localhost:3000.
+## 📂 Project Structure
 
-
-
-
-//Project Structure
+```
 /
 ├── data/
 │   └── entries.json         # Stores user-submitted diary entries
@@ -53,17 +64,21 @@ The server will start, and you can view the application at http://localhost:3000
 │   │   └── style.css        # Main stylesheet
 │   └── js/
 │       └── script.js        # Frontend JavaScript logic
-│   └── index.html           # Main HTML file
+├── views/
+│   └── index.html           # Main HTML file (assuming Express serves this)
 ├── server.js                # The Express.js server application
 ├── .gitignore               # Files to be ignored by Git
 ├── package.json             # Project dependencies and scripts
 └── README.md                # You are here!
+```
 
+---
 
+## ⚙️ Environment Variables
 
-//Environment Variables
 The application uses environment variables for configuration. This keeps sensitive data secure and allows for easy adjustments between development and production environments.
 
-PORT: The port on which the server will run. (Default: 3000)
-NODE_ENV: The application environment. Set to production for deployed versions.
-For Production (e.g., Render): These variables should be set in the "Environment" section of your hosting service's dashboard. Do not commit your .env file to version control.
+* `PORT`: The port on which the server will run. (Default: 3000)
+* `NODE_ENV`: The application environment. Set to `production` for deployed versions.
+
+**For Production (e.g., on Render):** These variables should be set in the "Environment" section of your hosting service's dashboard. **Do not** commit your `.env` file to version control.
