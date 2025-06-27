@@ -374,7 +374,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const masterSongList = [
           '3QHONiXGMGU3z68mQInncF',
           '7ssDqFuoNiVLu2vps3GL3b',
-          '7rvQrL6eEaWdgBfsRubEzc',
+          '7rvQrL6eEaWdgBfsRubEzc',       
+          '2aoqsoJ3n4AjdKUtqrIrrK?',
           '5Gv2EoWYl6KeCuyOAEnLbH',
           '7ARNzfrqpURb3Era5uY7rX',
           '2YeKQ7zSBbalFl5K0EpEgH?',
@@ -450,7 +451,7 @@ const slideshowImage = document.getElementById("slideshowImage");
 const nextImageBtn = document.getElementById("nextImageBtn");
 
 if (slideshowImage && nextImageBtn) {
-  const imageCount = 13; // Total number of teyze images
+  const imageCount = 22; // Total number of teyze images
   // Create an array of image filenames like "teyze1.png", "teyze2.png", etc.
   // This now points to your 'teyze_pics' folder
   const slideshowImages = Array.from({ length: imageCount }, (_, i) => `assets/teyze_pics/teyze${i + 1}.png`);
@@ -490,35 +491,35 @@ if (slideshowImage && nextImageBtn) {
 
 // ===========================
 // ===========================
+// Harmonious Floating Icons Logic (V3)
 // ===========================
-// Funny & Artistic Floating Icons Logic (V2)
-// ===========================
-const animationContainer = document.getElementById("hearts-animation-container");
+const animationPanels = document.querySelectorAll(".animation-panel");
 
-if (animationContainer) {
-  // 1. UPDATED: A wider and funnier selection of emojis to match the vibe
-  const icons = ['😂', '💀', '💅', '🤡', '🔥', '👀', '🫠', '✨', '💅', '☠️', '🥂'];
+// Check if the animation panels exist on the page
+if (animationPanels.length > 0) {
+  const icons = ['😂', '💀', '💅', '🤡', '🔥', '👀', '🫠', '✨', '🥂'];
+  const numberOfIcons = 30; // Increased for two panels
 
-  // 2. We increased the number of icons to 25 for a fuller background
-  const numberOfIcons = 25; 
-
-  for (let i = 0; i < numberOfIcons; i++) {
+  // Function to create a single icon and place it in a container
+  function createFloatingIcon(container) {
     const icon = document.createElement('div');
     icon.classList.add('floating-icon');
     
     icon.innerText = icons[Math.floor(Math.random() * icons.length)];
-    
-    // 3. THIS IS THE FIX: This logic ensures icons are spread evenly
-    // across the ENTIRE container, from edge to edge.
     icon.style.top = Math.random() * 100 + '%';
     icon.style.left = Math.random() * 100 + '%';
-    
     icon.style.fontSize = (Math.random() * 20 + 15) + 'px';
     icon.style.animationDelay = Math.random() * 8 + 's';
     
-    animationContainer.appendChild(icon);
+    container.appendChild(icon);
+  }
+
+  // Loop and create icons, distributing them between the available panels
+  for (let i = 0; i < numberOfIcons; i++) {
+    // Randomly pick one of the panels (left or right) for each icon
+    const targetPanel = animationPanels[Math.floor(Math.random() * animationPanels.length)];
+    createFloatingIcon(targetPanel);
   }
 }
-
 
 
