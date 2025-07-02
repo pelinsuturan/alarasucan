@@ -249,12 +249,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (changeSongBtn && spotifyPlayer) {
       const masterSongList = [
-          '3QHONiXGMGU3z68mQInncF', '7ssDqFuoNiVLu2vps3GL3b','1bKmdMIeHHYxK3Q6gRJ6bj?', '7rvQrL6eEaWdgBfsRubEzc',       
+          '3QHONiXGMGU3z68mQInncF','5dngxkMT7gkaGPAN0UpBwm?', '4pdLZsxq0y5oJDb6Cxlokw?','7ssDqFuoNiVLu2vps3GL3b','1bKmdMIeHHYxK3Q6gRJ6bj?', '7rvQrL6eEaWdgBfsRubEzc',       
           '2aoqsoJ3n4AjdKUtqrIrrK?','4i1mF5Vc6g7BQ8JhZwR00v?','0fIPsb9pIj6UhwPZ0ldElw?', '5Gv2EoWYl6KeCuyOAEnLbH', '7ARNzfrqpURb3Era5uY7rX',
-          '2YeKQ7zSBbalFl5K0EpEgH?', '41WHSazooiRVZFJuIwwLKH?', '1rJRIo0y2awuZfIWYKz2Uz?',
+          '2YeKQ7zSBbalFl5K0EpEgH?','2RmENPt0yPmU09BKjKC26M?', '41WHSazooiRVZFJuIwwLKH?', '1rJRIo0y2awuZfIWYKz2Uz?',
           '15TCBcHCuyYMCpEN5r6jF4', '24CoUR3GwPXeWJzGizLzhR?', '150wTRpIMh1v4s6919wsSj',
           '3fDIlN87QGT3nEPvILhwYP', '1Tc5rWp4d2lNAF50T5nybD?', '5ZwYy9pN328mMzYONXLRDn?',
-          '5jf9Zj1ebsD5gerVZzZ0X4?', '47430dfRtERI1JRAF5v6W5?', '4BFteJu5Hv7XStDXghJbQ7?',
+          '5jf9Zj1ebsD5gerVZzZ0X4?','62wtttQzoIA9HnNmGVd9Yq?', '47430dfRtERI1JRAF5v6W5?', '4BFteJu5Hv7XStDXghJbQ7?',
 
           '6r2zoEGcEOLGx4qIWvExFN?', '520iXlo3rd0yJvppBa4xyx',
       ];
